@@ -18,7 +18,7 @@ class Users(db.Model):
 
     @classmethod
     def delete_user(cls, name, email):
-        user = cls.query.filter_by(name=email).first()
+        user = cls.query.filter_by(email=email).first()
         if user:
             db.session.delete(user)
             db.session.commit()
