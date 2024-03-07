@@ -1,0 +1,27 @@
+version: '3'
+volumes:
+  db:
+
+services:
+  backend:
+    build: .
+    environment:
+      - SECRET_KEY=your_secret_key
+      - FLASK_APP=runner.py
+      - DB_URL=postgresql://experimentals:experimentals1@db:5432/habits_db
+    depends_on:
+      - db
+    ports:
+      - 80:5000
+
+  db:
+    image: postgres:14-alpine
+    container_name: dbb
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_DB: habits_db
+      POSTGRES_USER: experimentals
+      POSTGRES_PASSWORD: experimentals1
+    volumes:
+      - "db:/var/lib/postgresql/data"
