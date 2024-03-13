@@ -13,6 +13,9 @@ services:
       - db
     ports:
       - 80:5000
+    volumes:
+      - ./migrations:/site/migrations
+
 
   db:
     image: postgres:14-alpine
