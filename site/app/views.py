@@ -33,14 +33,15 @@ def login():
     if request.method == "POST":
         password = request.form["password"]
         email = request.form["email"]
-        user = Users.query.filter_by(email=email, password=password).first_or_404()  # ищем человека
+        user = Users.query.filter_by(email=email, password=password).first()  # ищем человека
         if user:
             user = UserLogin().create(user)
             login_user(user, remember=True)
-            return redirect("success")
+            return redirect("/")
         else:
-            message = "Неверное имя пользователя, email или пароль"
-            return redirect("unsuccess")
+            message = "Неверный email или пароль"
+            context = {"message": message}
+            return render_template("login.html", **context)
     context = {"message": message}
     return render_template("login.html", **context)
 
