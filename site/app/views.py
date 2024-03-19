@@ -46,6 +46,10 @@ def login():
     return render_template("login.html", **context)
 
 
+@app.route("/questions")
+def surveys():
+    return render_template("surveys.html")
+
 # @app.route("/profile")
 # @login_required
 # def profile():
