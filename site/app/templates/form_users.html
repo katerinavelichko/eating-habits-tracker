@@ -1,23 +1,35 @@
 {% block content %}
-    <br>
-    <h1>Регистрация</h1>
-    <br>
-    {% if message %}
-        <h3 style="color:red">{{ message }}</h3>
-    {% endif %}
+<link rel="stylesheet" type="text/css" href="../static/css/signup.css">
+<style>
+    h1 {
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+        width: 50%;
+    }
+</style>
 
-    {% for field, errors in form.errors.items() %}
-        <p>
-            {{ ', '.join(errors) }}
-        </p>
-    {% endfor %}
+<br>
+<h1>Регистрация</h1>
+<br>
+{% if message %}
+<h3 style="color:red">{{ message }}</h3>
+{% endif %}
 
-    <form method="post" action="">
+{% for field, errors in form.errors.items() %}
+<p>
+    {{ ', '.join(errors) }}
+</p>
+{% endfor %}
+
+<form method="post" action="">
+    <div class="form">
         {{ form.csrf_token }}
         {{ form.name.label }} {{ form.name }}
         {{ form.email.label }} {{ form.email }}
         {{ form.password.label }} {{ form.password }}
         {{ form.submit }}
-    </form>
+    </div>
+</form>
 
 {% endblock %}
