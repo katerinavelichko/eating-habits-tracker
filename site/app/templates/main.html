@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CodePen - Image carusel</title>
-  <link rel="stylesheet"  type="text/css" href="../static/css/style.css">
-</head>
-<body>
+{% extends 'base.html' %}
 
+{% block title %}Страница главная{% endblock %}
+{% block content %}
+ <link rel="stylesheet"  type="text/css" href="../static/css/style.css">
 <div class="carousel">
   <div class="carousel__nav">
    <span id="moveLeft" class="carousel__arrow">
@@ -26,7 +22,7 @@
       <div class="carousel-item__container">
       <h1 class="carousel-item__title">Сон</h1>
       <p class="carousel-item__description">Узнайте больше о своем сне</p>
-      <a href="/soon" class="carousel-item__btn">Подробнее</a>
+      <a href="/questions" class="carousel-item__btn">Подробнее</a>
         </div>
     </div>
   </div>
@@ -56,6 +52,4 @@
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script><script  src="../static/js/script.js"></script>
 
-</body>
-</html>
-
+{% endblock %}

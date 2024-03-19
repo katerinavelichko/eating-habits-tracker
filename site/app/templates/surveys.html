@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'base.html' %}
+
+{% block title %}Страница about{% endblock %}
+{% block content %}
     <title>Моя формочка</title>
     <!-- dependencies (jquery, handlebars and bootstrap) -->
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -15,8 +15,8 @@
           rel="stylesheet"/>
     <script type="text/javascript"
             src="//cdn.jsdelivr.net/npm/alpaca@1.5.27/dist/alpaca/bootstrap/alpaca.min.js"></script>
-</head>
-<body>
+
+
 <div id="form1"></div>
 <script type="text/javascript">
     $("#form1").alpaca({
@@ -178,5 +178,4 @@
         }
     });
 </script>
-</body>
-</html>
+{% endblock %}
