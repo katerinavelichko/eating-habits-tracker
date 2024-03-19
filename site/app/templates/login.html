@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/login_style.css">
-</head>
-<body>
+{% extends 'base.html' %}
 
+{% block title %}Страница авторизации{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="../static/css/login_style.css">
 <div class="d-flex justify-content-center">
     {% if message %}
     <br>
@@ -27,7 +23,4 @@
     </form>
 
 </div>
-
-
-</body>
-</html>
+{% endblock %}
