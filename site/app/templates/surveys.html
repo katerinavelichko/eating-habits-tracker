@@ -19,164 +19,164 @@
 <body>
 <div id="form1"></div>
 <script type="text/javascript">
-    $("#form1").alpaca({
-        "schema": {
-            "title": "Отвечайте честно",
-            "type": "object",
-            "properties": {
-                "tofu": {
-                    "type": "string",
-                    "title": "Тофу",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
+    $(document).ready(function () {
+        $("#form1").alpaca({
+            "schema": {
+                "title": "Отвечайте честно",
+                "type": "object",
+                "properties": {
+                    "tofu": {
+                        "type": "string",
+                        "title": "Тофу",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "fresh_cheeses": {
+                        "type": "string",
+                        "title": "Свежий сыр",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "processed_meat ": {
+                        "type": "string",
+                        "title": "Переработанное мясо (например, прошутто)",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "play_sport": {
+                        "type": "string",
+                        "title": "Занимаетесь ли вы спортом (не менее 5 часов в неделю)?",
+                        "enum": ['Да', 'Нет'],
+                        "required": true
+                    },
+                    "eat_weekend": {
+                        "type": "string",
+                        "title": "Питаетесь ли вы по-другому в выходные?",
+                        "enum": ['Да, я ем в ресторанах', 'Да, я больше ем дома', 'Иногда', 'Да', 'Нет', 'Я готовлю более изысканно'],
+                        "required": true
+                    },
+                    "sugary_drinks": {
+                        "type": "string",
+                        "title": "Сколько сахаросодержащих напитков вы потребляете в день?",
+                        "enum": [0, 1, 2, 3, 4, 5, 6, 7],
+                        "required": true
+                    },
+                    "milk": {
+                        "type": "string",
+                        "title": "Коровье молоко",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "miss_meals": {
+                        "type": "string",
+                        "title": "Вы пропускаете какие-нибудь приемы пищи регулярно?",
+                        "enum": ['Да', 'Нет', 'Да, обед', 'Да, из-за нехватки времени', 'Да, ужин', 'Да, завтрак', 'Я всегда голоден'],
+                        "required": true
+                    },
+                    "vegetable_drinks": {
+                        "type": "string",
+                        "title": "Растительные напитки (например, соевое молоко)",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "eat_fast": {
+                        "type": "string",
+                        "title": "Вы едите быстро?",
+                        "enum": ['Да', 'Нет'],
+                        "required": true
+                    },
+                    "cooked_vegetables": {
+                        "type": "string",
+                        "title": "Приготовленные овощи",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "low_fat_yogurt": {
+                        "type": "string",
+                        "title": "Белый йогурт с низким содержанием жира",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "wake_up_eat_night": {
+                        "type": "string",
+                        "title": "Просыпаетесь ли вы, чтобы поесть ночью?",
+                        "enum": ['Да', 'Нет', 'Иногда', 'Нечасто (около 1-го раза в месяц)', 'Каждый день', 'Часто (больше 1 раза в неделю)'],
+                        "required": true
+                    },
+                    "alcoholic_beverages": {
+                        "type": "string",
+                        "title": "Сколько раз  в неделю вы употребляете алкогольные напитки?",
+                        "enum": [0, 1, 2, 3, 4, 5, 6, 7],
+                        "required": true
+                    },
+                    "eat_uncontrollably": {
+                        "type": "string",
+                        "title": "Бывает ли, что вы едите бесконтрольно, даже если не голодны?",
+                        "enum": ['Нечасто (около 1-го раза в месяц)', 'Никогда', 'Каждый день', 'Часто (больше 1 раза в неделю)'],
+                        "required": true
+                    },
+                    "whole_grains_food": {
+                        "type": "string",
+                        "title": "Продукты из цельного зерна (например, цельнозерновой хлеб, греча)",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "eggs": {
+                        "type": "string",
+                        "title": "Яйца (в любом виде)",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "fruits": {
+                        "type": "string",
+                        "title": "Фрукты",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "fish": {
+                        "type": "string",
+                        "title": "Рыба",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "nuts": {
+                        "type": "string",
+                        "title": "Орехи",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
+                    "hungry_during_day": {
+                        "type": "string",
+                        "title": "Когда вы ощущаете голод в течение дня?",
+                        "enum": ['Вечером', 'Утром', 'Днем', 'Всегда'],
+                        "required": true
+                    }
                 },
-                "fresh_cheeses": {
-                    "type": "string",
-                    "title": "Свежий сыр",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "processed_meat ": {
-                    "type": "string",
-                    "title": "Переработанное мясо (например, прошутто)",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "play_sport": {
-                    "type": "string",
-                    "title": "Занимаетесь ли вы спортом (не менее 5 часов в неделю)?",
-                    "enum": ['Да', 'Нет'],
-                    "required": true
-                },
-                "eat_weekend": {
-                    "type": "string",
-                    "title": "Питаетесь ли вы по-другому в выходные?",
-                    "enum": ['Да, я ем в ресторанах', 'Да, я больше ем дома', 'Иногда', 'Да', 'Нет', 'Я готовлю более изысканно'],
-                    "required": true
-                },
-                "sugary_drinks": {
-                    "type": "string",
-                    "title": "Сколько сахаросодержащих напитков вы потребляете в день?",
-                    "enum": [0, 1, 2, 3, 4, 5, 6, 7],
-                    "required": true
-                },
-                "milk": {
-                    "type": "string",
-                    "title": "Коровье молоко",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "miss_meals": {
-                    "type": "string",
-                    "title": "Вы пропускаете какие-нибудь приемы пищи регулярно?",
-                    "enum": ['Да', 'Нет', 'Да, обед', 'Да, из-за нехватки времени', 'Да, ужин', 'Да, завтрак', 'Я всегда голоден'],
-                    "required": true
-                },
-                "vegetable_drinks": {
-                    "type": "string",
-                    "title": "Растительные напитки (например, соевое молоко)",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "eat_fast": {
-                    "type": "string",
-                    "title": "Вы едите быстро?",
-                    "enum": ['Да', 'Нет'],
-                    "required": true
-                },
-                "cooked_vegetables": {
-                    "type": "string",
-                    "title": "Приготовленные овощи",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "low_fat_yogurt": {
-                    "type": "string",
-                    "title": "Белый йогурт с низким содержанием жира",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "wake_up_eat_night": {
-                    "type": "string",
-                    "title": "Просыпаетесь ли вы, чтобы поесть ночью?",
-                    "enum": ['Да', 'Нет', 'Иногда', 'Нечасто (около 1-го раза в месяц)', 'Каждый день', 'Часто (больше 1 раза в неделю)'],
-                    "required": true
-                },
-                "alcoholic_beverages": {
-                    "type": "string",
-                    "title": "Сколько раз  в неделю вы употребляете алкогольные напитки?",
-                    "enum": [0, 1, 2, 3, 4, 5, 6, 7],
-                    "required": true
-                },
-                "eat_uncontrollably": {
-                    "type": "string",
-                    "title": "Бывает ли, что вы едите бесконтрольно, даже если не голодны?",
-                    "enum": ['Нечасто (около 1-го раза в месяц)', 'Никогда', 'Каждый день', 'Часто (больше 1 раза в неделю)'],
-                    "required": true
-                },
-                "whole_grains_food": {
-                    "type": "string",
-                    "title": "Продукты из цельного зерна (например, цельнозерновой хлеб, греча)",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "eggs": {
-                    "type": "string",
-                    "title": "Яйца (в любом виде)",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "fruits": {
-                    "type": "string",
-                    "title": "Фрукты",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "fish": {
-                    "type": "string",
-                    "title": "Рыба",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "nuts": {
-                    "type": "string",
-                    "title": "Орехи",
-                    "enum": ['Да', 'Нет', 'Иногда'],
-                    "required": true
-                },
-                "hungry_during_day": {
-                    "type": "string",
-                    "title": "Когда вы ощущаете голод в течение дня?",
-                    "enum": ['Вечером', 'Утром', 'Днем', 'Всегда'],
-                    "required": true
-                }
             },
-        },
-        "options": {
-            "form": {
-                "attributes": {
-                    "action": "http://httpbin.org/post",
-                    "method": "post"
-                },
-                "buttons": {
-                    "submit": {
-                        "title": "Send Form Data",
-                        "click": function () {
-                            var val = this.getValue();
-                            if (this.isValid(true)) {
-                                alert("Valid value: " + JSON.stringify(val, null, "  "));
-                                this.ajaxSubmit().done(function () {
-                                    alert("Posted!");
-                                });
-                            } else {
-                                alert("Invalid value: " + JSON.stringify(val, null, "  "));
+            "options": {
+                "form": {
+                    "attributes": {
+                        "action": "http://httpbin.org/post",
+                        "method": "post"
+                    },
+                    "buttons": {
+                        "submit": {
+                            "title": "Send Form Data",
+                            "click": function () {
+                                var val = this.getValue();
+                                // Создание и отправка AJAX запроса
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('POST', '/receive_data', true);
+                                xhr.setRequestHeader('Content-Type', 'application/json');
+                                xhr.send(JSON.stringify(val));
                             }
                         }
                     }
                 }
             }
-        }
+        });
     });
+
 </script>
 </body>
 </html>
