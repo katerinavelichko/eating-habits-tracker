@@ -1,6 +1,5 @@
 import json
 
-import sqlalchemy
 from flask import (
     render_template,
     request,
@@ -52,27 +51,27 @@ def login():
 
 
 @app.route("/questions")
+@login_required
 def surveys():
     return render_template("surveys.html")
 
 
-# @app.route("/profile")
-# @login_required
-# def profile():
-#     user_id = current_user.get_id()
-#     user = Users.query.get(user_id)
-#     context = {
-#         'user': user
-#     }
-#     return render_template("profile.html", **context)
-#
-#
-# @app.route("/logout")
-# def logout():
-#     logout_user()
-#     return redirect("/login")
-#
-#
+@app.route("/profile")
+@login_required
+def profile():
+    user_id = current_user.get_id()
+    user = Users.query.get(user_id)
+    context = {
+        'user': user
+    }
+    return render_template("profile.html", **context)
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/login")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def create_user():
@@ -97,13 +96,14 @@ def create_user():
 
 
 @app.route("/receive_data", methods=["POST", "GET"])
+@login_required
 def receive_data_from_forms():
     data = request.get_json()
-    # print(data)
+
     form = QuestionsSleep()
 
-    res = Users.query.filter_by(Users.id.desc().limits(1)).first()
-    print(res)
+    user_id = current_user.get_id()
+    form.add_question(user_id, data)
     return data
 
 
