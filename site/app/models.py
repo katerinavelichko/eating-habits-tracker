@@ -57,6 +57,7 @@ class QuestionsSleep(db.Model):
     eat_uncontrollably = db.Column(db.String(255))
     alcoholic_beverages = db.Column(db.String(255))
     meat = db.Column(db.String(255))
+    sex = db.Column(db.String(10))
 
     @classmethod
     def add_question(cls, user_id, question_data):
