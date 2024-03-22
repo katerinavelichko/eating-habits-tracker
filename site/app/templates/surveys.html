@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'base.html' %}
+
+{% block title %}Страница about{% endblock %}
+{% block content %}
     <title>Моя формочка</title>
     <!-- dependencies (jquery, handlebars and bootstrap) -->
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -15,8 +15,8 @@
           rel="stylesheet"/>
     <script type="text/javascript"
             src="//cdn.jsdelivr.net/npm/alpaca@1.5.27/dist/alpaca/bootstrap/alpaca.min.js"></script>
-</head>
-<body>
+
+
 <div id="form1"></div>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -37,7 +37,7 @@
                         "enum": ['Да', 'Нет', 'Иногда'],
                         "required": true
                     },
-                    "processed_meat ": {
+                    "processed_meat": {
                         "type": "string",
                         "title": "Переработанное мясо (например, прошутто)",
                         "enum": ['Да', 'Нет', 'Иногда'],
@@ -61,7 +61,7 @@
                         "enum": [0, 1, 2, 3, 4, 5, 6, 7],
                         "required": true
                     },
-                    "milk": {
+                    "cows_milk": {
                         "type": "string",
                         "title": "Коровье молоко",
                         "enum": ['Да', 'Нет', 'Иногда'],
@@ -139,6 +139,12 @@
                         "enum": ['Да', 'Нет', 'Иногда'],
                         "required": true
                     },
+                    "meat": {
+                        "type": "string",
+                        "title": "Мясо",
+                        "enum": ['Да', 'Нет', 'Иногда'],
+                        "required": true
+                    },
                     "nuts": {
                         "type": "string",
                         "title": "Орехи",
@@ -169,6 +175,7 @@
                                 xhr.open('POST', '/receive_data', true);
                                 xhr.setRequestHeader('Content-Type', 'application/json');
                                 xhr.send(JSON.stringify(val));
+                                window.location.href='/'
                             }
                         }
                     }
@@ -178,5 +185,4 @@
     });
 
 </script>
-</body>
-</html>
+{% endblock %}
