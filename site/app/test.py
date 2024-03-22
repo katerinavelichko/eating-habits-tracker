@@ -1,5 +1,8 @@
-@app.route("/test")
-def test():
+import json
+import pandas as pd
+
+
+def make_df_for_model(current_user, QuestionsSleep):
     print(1)
     user_id = current_user.get_id()
     user_answers = QuestionsSleep.query.filter_by(user_id=user_id).first()
@@ -83,6 +86,7 @@ def test():
         "Никак не влияет": "Doesn't have any effect",
         "У меня нет стресса": "I have no stress"
     }
+
     json_data = json.dumps(user_answers_dict, ensure_ascii=False)
     data_dict = json.loads(json_data)
     translated_data = {key: eng_answers[value] if value in eng_answers else value for key, value in data_dict.items()}
@@ -118,7 +122,7 @@ def test():
            'eggs': 'Eggs',
            'whole_grains_food': 'Whole grains food',
            'meat': 'Meat'}
-    new_dict = {}
+    answer_dict = {}
 
     for key, value in translated_data.items():
         if key in food_db:
@@ -126,24 +130,24 @@ def test():
             new_key_sometimes = food_dict[key] + "_Sometimes"
             new_key_yes = food_dict[key] + "_Yes"
 
-            new_dict[new_key_no] = 1 if value == "No" else 0
-            new_dict[new_key_sometimes] = 1 if value == "Sometimes" else 0
-            new_dict[new_key_yes] = 1 if value == "Yes" else 0
+            answer_dict[new_key_no] = 1 if value == "No" else 0
+            answer_dict[new_key_sometimes] = 1 if value == "Sometimes" else 0
+            answer_dict[new_key_yes] = 1 if value == "Yes" else 0
         elif key == 'eat_weekend':
             new_key_no = res[key] + "_No"
             new_key_elaborate = res[key] + "_I cook more elaborate"
             new_key_restaurants = res[key] + "_Yes, I eat at restaurants"
             new_key_home = res[key] + "_Yes, I eat more at home"
 
-            new_dict[new_key_no] = 1 if value == "No" else 0
-            new_dict[new_key_elaborate] = 1 if value == "I cook more elaborate" else 0
-            new_dict[new_key_restaurants] = 1 if value == "Yes, I eat at restaurants" else 0
-            new_dict[new_key_home] = 1 if value == "Yes, I eat more at home" else 0
+            answer_dict[new_key_no] = 1 if value == "No" else 0
+            answer_dict[new_key_elaborate] = 1 if value == "I cook more elaborate" else 0
+            answer_dict[new_key_restaurants] = 1 if value == "Yes, I eat at restaurants" else 0
+            answer_dict[new_key_home] = 1 if value == "Yes, I eat more at home" else 0
 
         elif key == 'alcoholic_beverages':
             new_key_alcohol = res[key]
 
-            new_dict[new_key_alcohol] = value
+            answer_dict[new_key_alcohol] = value
 
         elif key == 'miss_meals':
             new_key_no = res[key] + "_No"
@@ -152,11 +156,11 @@ def test():
             new_key_dinner = res[key] + "_Yes, dinner"
             new_key_lunch = res[key] + "_Yes, lunch"
 
-            new_dict[new_key_no] = 1 if value == "No" else 0
-            new_dict[new_key_breakfast] = 1 if value == "Yes, breakfast" else 0
-            new_dict[new_key_yes] = 1 if value == "Yes" else 0
-            new_dict[new_key_dinner] = 1 if value == "Yes, dinner" else 0
-            new_dict[new_key_lunch] = 1 if value == "Yes, lunch" else 0
+            answer_dict[new_key_no] = 1 if value == "No" else 0
+            answer_dict[new_key_breakfast] = 1 if value == "Yes, breakfast" else 0
+            answer_dict[new_key_yes] = 1 if value == "Yes" else 0
+            answer_dict[new_key_dinner] = 1 if value == "Yes, dinner" else 0
+            answer_dict[new_key_lunch] = 1 if value == "Yes, lunch" else 0
 
         elif key == 'eat_uncontrollably':
             new_key_everyday = res[key] + "_Every day"
@@ -164,22 +168,22 @@ def test():
             new_key_never = res[key] + "_Never"
             new_key_often = res[key] + "_Often (>1/week)"
 
-            new_dict[new_key_everyday] = 1 if value == "Every day" else 0
-            new_dict[new_key_infreq] = 1 if value == "Infrequent (1/month)" else 0
-            new_dict[new_key_never] = 1 if value == "Never" else 0
-            new_dict[new_key_often] = 1 if value == "Often (>1/week)" else 0
+            answer_dict[new_key_everyday] = 1 if value == "Every day" else 0
+            answer_dict[new_key_infreq] = 1 if value == "Infrequent (1/month)" else 0
+            answer_dict[new_key_never] = 1 if value == "Never" else 0
+            answer_dict[new_key_often] = 1 if value == "Often (>1/week)" else 0
 
         elif key == 'play_sport':
             new_key_no = res[key] + "_No"
             new_key_yes = res[key] + "_Yes"
 
-            new_dict[new_key_no] = 1 if value == "No" else 0
-            new_dict[new_key_yes] = 1 if value == "Yes" else 0
+            answer_dict[new_key_no] = 1 if value == "No" else 0
+            answer_dict[new_key_yes] = 1 if value == "Yes" else 0
 
         elif key == 'sugary_drinks':
             new_key_sugary = res[key]
 
-            new_dict[new_key_sugary] = value
+            answer_dict[new_key_sugary] = value
 
         elif key == 'hungry_during_day':
             new_key_everyday = res[key] + "_Every day"
@@ -188,18 +192,18 @@ def test():
             new_key_dinner = res[key] + "_Yes, dinner"
             new_key_lunch = res[key] + "_Yes, lunch"
 
-            new_dict[new_key_everyday] = 1 if value == "Every day" else 0
-            new_dict[new_key_breakfast] = 1 if value == "Yes, breakfast" else 0
-            new_dict[new_key_yes] = 1 if value == "Yes" else 0
-            new_dict[new_key_dinner] = 1 if value == "Yes, dinner" else 0
-            new_dict[new_key_lunch] = 1 if value == "Yes, lunch" else 0
+            answer_dict[new_key_everyday] = 1 if value == "Every day" else 0
+            answer_dict[new_key_breakfast] = 1 if value == "Yes, breakfast" else 0
+            answer_dict[new_key_yes] = 1 if value == "Yes" else 0
+            answer_dict[new_key_dinner] = 1 if value == "Yes, dinner" else 0
+            answer_dict[new_key_lunch] = 1 if value == "Yes, lunch" else 0
 
         elif key == 'sex':
             new_key_m = res[key] + '_M'
             new_key_f = res[key] + '_F'
 
-            new_dict[new_key_m] = 1 if value == 'M' else 0
-            new_dict[new_key_f] = 1 if value == 'F' else 0
+            answer_dict[new_key_m] = 1 if value == 'M' else 0
+            answer_dict[new_key_f] = 1 if value == 'F' else 0
 
         elif key == 'wake_up_eat_night':
             new_key_everyday = res[key] + '_Every_day'
@@ -207,15 +211,15 @@ def test():
             new_key_never = res[key] + '_Never'
             new_key_often = res[key] + '_Often (>1/week)'
 
-            new_dict[new_key_everyday] = 1 if value == "Every day" else 0
-            new_dict[new_key_often] = 1 if value == "Often" else 0
-            new_dict[new_key_never] = 1 if value == "Never" else 0
-            new_dict[new_key_infrequent] = 1 if value == "Infrequent" else 0
+            answer_dict[new_key_everyday] = 1 if value == "Every day" else 0
+            answer_dict[new_key_often] = 1 if value == "Often" else 0
+            answer_dict[new_key_never] = 1 if value == "Never" else 0
+            answer_dict[new_key_infrequent] = 1 if value == "Infrequent" else 0
 
-    new_dict["Tofu_Don't know"] = 0
+    answer_dict["Tofu_Don't know"] = 0
 
-    df = pd.DataFrame(new_dict, index=[0]).reset_index()
+    df = pd.DataFrame(answer_dict, index=[0]).reset_index()
 
     df = df.drop('index', axis=1)
 
-    return new_dict
+    return df
