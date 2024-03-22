@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}profile{% endblock %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="../static/css/profile.css">
+    <div class=" justify-content-center">
+        <br>
+        <h1 style="font-weight:bold; color:blue;">Профиль</h1>
+        <br>
+        <h3>Login: {{ user.name }}</h3>
+        <h3>Email: {{ user.email }}</h3>
+        <br>
+
+    </div>
+{% endblock %}

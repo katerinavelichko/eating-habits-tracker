@@ -72,7 +72,6 @@ def logout():
     logout_user()
     return redirect("/login")
 
-
 @app.route("/signup", methods=["GET", "POST"])
 def create_user():
     message = None

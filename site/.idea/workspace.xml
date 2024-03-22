@@ -5,10 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20ef2397-d91d-4edd-8078-537843276f8f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../notebooks/sleep_models.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/css/navbar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/includes/footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/includes/navbar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/eating-habits-tracker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/eating-habits-tracker.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/css/login_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/login_style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/form_users.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/form_users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/main.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/surveys.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/surveys.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
@@ -22,6 +31,7 @@
       <list>
         <option value="Python Script" />
         <option value="HTML File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -55,8 +65,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "artem__branch",
+    "git-widget-placeholder": "Merging artem__branch",
     "last_opened_file_path": "D:/Project Habbits/eating-habits-tracker/site",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -64,6 +75,11 @@
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
 }]]></component>
   <component name="RunManager" selected="Flask server.site">
@@ -127,6 +143,10 @@
       <workItem from="1710594513508" duration="7486000" />
       <workItem from="1710681018449" duration="20000" />
       <workItem from="1710846690775" duration="22836000" />
+      <workItem from="1710969784880" duration="1148000" />
+      <workItem from="1711044083720" duration="5324000" />
+      <workItem from="1711056762211" duration="846000" />
+      <workItem from="1711119192885" duration="11315000" />
     </task>
     <servers />
   </component>
@@ -145,6 +165,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/site$site.coverage" NAME="site Coverage Results" MODIFIED="1710873774179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/site$site.coverage" NAME="site Coverage Results" MODIFIED="1711130023996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
