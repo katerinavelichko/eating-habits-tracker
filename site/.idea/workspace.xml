@@ -8,6 +8,8 @@
       <change beforePath="$PROJECT_DIR$/../.idea/eating-habits-tracker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/eating-habits-tracker.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/surveys.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/surveys.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,7 +126,7 @@
       <workItem from="1710423495588" duration="7435000" />
       <workItem from="1710594513508" duration="7486000" />
       <workItem from="1710681018449" duration="20000" />
-      <workItem from="1710846690775" duration="9880000" />
+      <workItem from="1710846690775" duration="22836000" />
     </task>
     <servers />
   </component>
@@ -143,6 +145,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/site$site.coverage" NAME="site Coverage Results" MODIFIED="1710860058090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/site$site.coverage" NAME="site Coverage Results" MODIFIED="1710873774179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

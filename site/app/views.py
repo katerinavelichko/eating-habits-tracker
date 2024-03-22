@@ -1,16 +1,19 @@
+import json
+
+import sqlalchemy
 from flask import (
     render_template,
     request,
     redirect,
-    url_for
+    url_for,
+    jsonify
 )
 from flask_login import login_required, login_user, logout_user, current_user
-
 from app import app, login_manager, db
 
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
-from .models import Users
+from .models import Users, QuestionsSleep
 
 
 @login_manager.user_loader
@@ -23,9 +26,11 @@ def load_user(user_id):
 def index():
     return render_template("main.html")
 
+
 @app.route("/soon")
 def soon():
     return "Скоро тут что-то будет"
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -49,6 +54,7 @@ def login():
 @app.route("/questions")
 def surveys():
     return render_template("surveys.html")
+
 
 # @app.route("/profile")
 # @login_required
@@ -88,6 +94,17 @@ def create_user():
         "message": message,
     }
     return render_template("form_users.html", form=form, **context)
+
+
+@app.route("/receive_data", methods=["POST", "GET"])
+def receive_data_from_forms():
+    data = request.get_json()
+    # print(data)
+    form = QuestionsSleep()
+
+    res = Users.query.filter_by(Users.id.desc().limits(1)).first()
+    print(res)
+    return data
 
 
 @app.route("/signup/success")
