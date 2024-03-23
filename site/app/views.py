@@ -1,16 +1,19 @@
+import json
+
 from flask import (
     render_template,
     request,
     redirect,
-    url_for
+    url_for,
+    jsonify
 )
 from flask_login import login_required, login_user, logout_user, current_user
-
 from app import app, login_manager, db
 
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
-from .models import Users
+from .models import Users, QuestionsSleep
+from .test import make_df_for_model
 
 
 @login_manager.user_loader
@@ -23,9 +26,11 @@ def load_user(user_id):
 def index():
     return render_template("main.html")
 
+
 @app.route("/soon")
 def soon():
     return "Скоро тут что-то будет"
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -46,23 +51,27 @@ def login():
     return render_template("login.html", **context)
 
 
-# @app.route("/profile")
-# @login_required
-# def profile():
-#     user_id = current_user.get_id()
-#     user = Users.query.get(user_id)
-#     context = {
-#         'user': user
-#     }
-#     return render_template("profile.html", **context)
-#
-#
-# @app.route("/logout")
-# def logout():
-#     logout_user()
-#     return redirect("/login")
-#
-#
+@app.route("/questions")
+@login_required
+def surveys():
+    return render_template("surveys.html")
+
+
+@app.route("/profile")
+@login_required
+def profile():
+    user_id = current_user.get_id()
+    user = Users.query.get(user_id)
+    context = {
+        'user': user
+    }
+    return render_template("profile.html", **context)
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/login")
 
 @app.route("/signup", methods=["GET", "POST"])
 def create_user():
@@ -84,6 +93,18 @@ def create_user():
         "message": message,
     }
     return render_template("form_users.html", form=form, **context)
+
+
+@app.route("/receive_data", methods=["POST", "GET"])
+@login_required
+def receive_data_from_forms():
+    data = request.get_json()
+
+    form = QuestionsSleep()
+
+    user_id = current_user.get_id()
+    form.add_question(user_id, data)
+    return data
 
 
 @app.route("/signup/success")
