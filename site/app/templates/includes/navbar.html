@@ -14,10 +14,10 @@
             </li>
             {% if current_user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('logout') }}">Выйти из аккаунта</a>
+                    <a class="nav-link" href="{{ url_for('profile') }}">Профиль</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('profile') }}">Профиль</a>
+                    <a class="nav-link" href="{{ url_for('logout') }}">Выйти из аккаунта</a>
                 </li>
             {% else %}
                 <li class="nav-item">

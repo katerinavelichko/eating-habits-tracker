@@ -73,6 +73,7 @@ def logout():
     logout_user()
     return redirect("/login")
 
+
 @app.route("/signup", methods=["GET", "POST"])
 def create_user():
     message = None
@@ -107,14 +108,20 @@ def receive_data_from_forms():
     return data
 
 
-@app.route("/signup/success")
-def success():
-    return render_template("success.html")
+@app.route("/profile/answers", methods=["GET", "POST"])
+@login_required
+def answers():
+    return render_template('answers.html')
 
 
-@app.route("/signup/unsuccess")
-def unsuccess():
-    return render_template("unsuccess.html")
+# @app.route("/signup/success")
+# def success():
+#     return render_template("success.html")
+#
+#
+# @app.route("/signup/unsuccess")
+# def unsuccess():
+#     return render_template("unsuccess.html")
 
 
 if __name__ == "__main__":
