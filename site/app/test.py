@@ -3,7 +3,6 @@ import pandas as pd
 
 
 def make_df_for_model(current_user, QuestionsSleep):
-    print(1)
     user_id = current_user.get_id()
     user_answers = QuestionsSleep.query.filter_by(user_id=user_id).first()
     if user_answers:
@@ -222,4 +221,92 @@ def make_df_for_model(current_user, QuestionsSleep):
 
     df = df.drop('index', axis=1)
 
-    return df
+    df.columns = [col.replace(' ', '_').replace('?', '').replace('%', '').replace('(', '').replace(')', '').replace(',',
+                                                                                                                    '').replace(
+        ':', '').replace('{', '').replace('}', '') for col in df.columns]
+
+    df = df.rename(columns={
+        'When_are_you_hungry_during_the_day_Every_day': "When_are_you_hungry_during_the_day_I'm_always_hungry",
+        'When_are_you_hungry_during_the_day_Yes': "When_are_you_hungry_during_the_day_afternoon+evening",
+        'When_are_you_hungry_during_the_day_Yes_breakfast': "When_are_you_hungry_during_the_day_In_the_morning",
+        'When_are_you_hungry_during_the_day_Yes_dinner': "When_are_you_hungry_during_the_day_In_the_evening",
+        'When_are_you_hungry_during_the_day_Yes_lunch': "When_are_you_hungry_during_the_day_In_the_afternoon"
+    })
+
+    original = [
+        "Tofu_Don't_know",
+        "Tofu_No",
+        "Tofu_Sometimes",
+        "Tofu_Yes",
+        "Processed_Meat_es_prosciutto_No",
+        "Processed_Meat_es_prosciutto_Sometimes",
+        "Processed_Meat_es_prosciutto_Yes",
+        "SEX_F",
+        "SEX_M",
+        "Do_you_play_a_sport_at_least_5_hours/week_No",
+        "Do_you_play_a_sport_at_least_5_hours/week_Yes",
+        "Do_you_eat_differently_at_the_weekend_I_cook_more_elaborate",
+        "Do_you_eat_differently_at_the_weekend_No",
+        "Do_you_eat_differently_at_the_weekend_Yes_I_eat_at_restaurants",
+        "Do_you_eat_differently_at_the_weekend_Yes_I_eat_more_at_home",
+        "Cow's_milk_No",
+        "Cow's_milk_Sometimes",
+        "Cow's_milk_Yes",
+        "Fresh_cheeses_No",
+        "Fresh_cheeses_Sometimes",
+        "Fresh_cheeses_Yes",
+        "Do_you_ever_miss_meals_No",
+        "Do_you_ever_miss_meals_Yes",
+        "Do_you_ever_miss_meals_Yes_breakfast",
+        "Do_you_ever_miss_meals_Yes_dinner",
+        "Do_you_ever_miss_meals_Yes_lunch",
+        "Cooked_vegetables_No",
+        "Cooked_vegetables_Sometimes",
+        "Cooked_vegetables_Yes",
+        "Low-fat_white_yogurt_No",
+        "Low-fat_white_yogurt_Sometimes",
+        "Low-fat_white_yogurt_Yes",
+        "Do_you_wake_up_to_eat_at_night_Every_day",
+        "Do_you_wake_up_to_eat_at_night_Infrequent_1/month",
+        "Do_you_wake_up_to_eat_at_night_Never",
+        "Do_you_wake_up_to_eat_at_night_Often_>1/week",
+        "When_are_you_hungry_during_the_day_I'm_always_hungry",
+        "When_are_you_hungry_during_the_day_In_the_afternoon",
+        "When_are_you_hungry_during_the_day_In_the_evening",
+        "When_are_you_hungry_during_the_day_In_the_morning",
+        "When_are_you_hungry_during_the_day_afternoon+evening",
+        "Nuts_No",
+        "Nuts_Sometimes",
+        "Nuts_Yes",
+        "Fish_No",
+        "Fish_Sometimes",
+        "Fish_Yes",
+        "Fruits_No",
+        "Fruits_Sometimes",
+        "Fruits_Yes",
+        "Eggs_No",
+        "Eggs_Sometimes",
+        "Eggs_Yes",
+        "Whole_grains_food_No",
+        "Whole_grains_food_Sometimes",
+        "Whole_grains_food_Yes",
+        "Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Every_day",
+        "Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Infrequent_1/month",
+        "Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Never",
+        "Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Often_>1/week",
+        "Meat_No",
+        "Meat_Sometimes",
+        "Meat_Yes",
+        "How_many_sugary_drinks_do_you_consume_per_day",
+        "How_many_times_do_you_consume_alcoholic_beverages_in_a_week"
+    ]
+    dictionary = df.to_dict(orient='records')
+    final_dict = {}
+    for col in original:
+        final_dict[col] = [d[col] for d in dictionary][0]
+
+    final_df = pd.DataFrame(final_dict, index=[0]).reset_index()
+
+    final_df = final_df.drop('index', axis=1)
+
+    return final_df
