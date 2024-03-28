@@ -15,6 +15,16 @@ from .forms import CreateUserForm
 from .models import Users, QuestionsSleep
 from .test import make_df_for_model
 
+from joblib import load
+from sklearn.ensemble import RandomForestClassifier
+import os
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(current_directory, 'rf_model.joblib')
+
+# Load the model
+rf_model = load(model_path)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -111,7 +121,7 @@ def receive_data_from_forms():
 @app.route("/profile/answers", methods=["GET", "POST"])
 @login_required
 def answers():
-    return render_template('answers.html')
+    return rf_model.predict(make_df_for_model(current_user, QuestionsSleep)).tolist()
 
 
 # @app.route("/signup/success")
