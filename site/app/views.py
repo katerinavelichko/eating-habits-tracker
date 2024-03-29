@@ -9,11 +9,23 @@ from flask import (
 )
 from flask_login import login_required, login_user, logout_user, current_user
 from app import app, login_manager, db
+from yandexgptlite import YandexGPTLite
 
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
 from .models import Users, QuestionsSleep
 from .test import make_df_for_model
+
+from joblib import load
+from sklearn.ensemble import RandomForestClassifier
+import os
+import constants
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(current_directory, 'rf_model.joblib')
+
+# Load the model
+rf_model = load(model_path)
 
 
 @login_manager.user_loader
@@ -111,7 +123,18 @@ def receive_data_from_forms():
 @app.route("/profile/answers", methods=["GET", "POST"])
 @login_required
 def answers():
-    return render_template('answers.html')
+    number = rf_model.predict(make_df_for_model(current_user, QuestionsSleep)[0]).tolist()[0]
+    keys = make_df_for_model(current_user, QuestionsSleep)[1]
+    if int(number) == 1:
+        prompt = "Напиши в стиле наставления мне, что у меня хорошее качество сна, но чтобы его улучшить, нужно исправить 3 критерия:" + \
+                 keys[0] + "," + keys[1] + "," + keys[2]
+    else:
+        prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
+                 keys[0] + "," + keys[1] + "," + keys[2]
+    account = YandexGPTLite('b1gcghjsok0u7pp94plu', 'y0_AgAEA7qkP0WqAATuwQAAAAEAKm7pAABo1V6HejhPmpns95QMCEdmlEb2QA')
+    text = account.create_completion(prompt, '0.6')
+    text1 = ''.join(text.split(":")[1:])
+    return text1
 
 
 # @app.route("/signup/success")
