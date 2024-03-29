@@ -97,7 +97,7 @@ def create_user():
                 name = form.name.data
                 password = form.password.data
                 Users.add_user(name, email, password)
-                return redirect(url_for("success"))
+                return redirect(url_for("index"))
             else:
                 return redirect(url_for("unsuccess"))
         else:
@@ -131,7 +131,8 @@ def answers():
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
-    account = YandexGPTLite('b1gcghjsok0u7pp94plu', 'y0_AgAEA7qkP0WqAATuwQAAAAEAKm7pAABo1V6HejhPmpns95QMCEdmlEb2QA')
+
+    account = YandexGPTLite('your_secret_key', 'your_secret_key')
     text = account.create_completion(prompt, '0.6')
     text1 = ''.join(text.split(":")[1:])
     return text1
@@ -142,9 +143,9 @@ def answers():
 #     return render_template("success.html")
 #
 #
-# @app.route("/signup/unsuccess")
-# def unsuccess():
-#     return render_template("unsuccess.html")
+@app.route("/signup/unsuccess")
+def unsuccess():
+    return render_template("unsuccess.html")
 
 
 if __name__ == "__main__":
