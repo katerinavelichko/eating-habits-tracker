@@ -301,12 +301,164 @@ def make_df_for_model(current_user, QuestionsSleep):
         "How_many_times_do_you_consume_alcoholic_beverages_in_a_week"
     ]
     dictionary = df.to_dict(orient='records')
-    final_dict = {}
+    tmp_dict = {}
     for col in original:
-        final_dict[col] = [d[col] for d in dictionary][0]
+        tmp_dict[col] = [d[col] for d in dictionary][0]
+
+    final_dict = tmp_dict.copy()
+    cnt1, cnt2 = 0, 0
+    features = []
+    while len(features) < 3 and cnt2 < len(tmp_dict.keys()):
+        if int(tmp_dict['Do_you_wake_up_to_eat_at_night_Never']) == 1:
+            features.append('Do_you_wake_up_to_eat_at_night_Never')
+            tmp_dict['Do_you_wake_up_to_eat_at_night_Never'] = 0
+        elif int(tmp_dict['How_many_sugary_drinks_do_you_consume_per_day']) > 2:
+            features.append('How_many_sugary_drinks_do_you_consume_per_day')
+            tmp_dict['How_many_sugary_drinks_do_you_consume_per_day'] = 0
+        elif int(tmp_dict['How_many_times_do_you_consume_alcoholic_beverages_in_a_week']) > 0:
+            features.append('How_many_times_do_you_consume_alcoholic_beverages_in_a_week')
+            tmp_dict['How_many_times_do_you_consume_alcoholic_beverages_in_a_week'] = 0
+        elif int(tmp_dict['Do_you_ever_miss_meals_No']) == 1:
+            features.append('Do_you_ever_miss_meals_No')
+            tmp_dict['Do_you_ever_miss_meals_No'] = 0
+        elif int(tmp_dict['Do_you_wake_up_to_eat_at_night_Often_>1/week']) == 1:
+            features.append('Do_you_wake_up_to_eat_at_night_Often_>1/week')
+            tmp_dict['Do_you_wake_up_to_eat_at_night_Often_>1/week'] = 0
+        elif int(tmp_dict["Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Often_>1/week"]) == 1:
+            features.append("Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Often_>1/week")
+            tmp_dict["Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Often_>1/week"] = 0
+        elif int(tmp_dict['Whole_grains_food_Yes']) == 1:
+            features.append('Whole_grains_food_Yes')
+            tmp_dict['Whole_grains_food_Yes'] = 0
+        elif int(tmp_dict['Do_you_play_a_sport_at_least_5_hours/week_No']) == 1:
+            features.append('Do_you_play_a_sport_at_least_5_hours/week_No')
+            tmp_dict['Do_you_play_a_sport_at_least_5_hours/week_No'] = 0
+        elif int(tmp_dict['Nuts_Yes']) == 1:
+            features.append('Nuts_Yes')
+            tmp_dict['Nuts_Yes'] = 0
+        elif int(tmp_dict['When_are_you_hungry_during_the_day_In_the_morning']) == 1:
+            features.append('When_are_you_hungry_during_the_day_In_the_morning')
+            tmp_dict['When_are_you_hungry_during_the_day_In_the_morning'] = 0
+        elif int(tmp_dict['Do_you_eat_differently_at_the_weekend_Yes_I_eat_more_at_home']) == 1:
+            features.append('Do_you_eat_differently_at_the_weekend_Yes_I_eat_more_at_home')
+            tmp_dict['Do_you_eat_differently_at_the_weekend_Yes_I_eat_more_at_home'] = 0
+        elif int(tmp_dict['When_are_you_hungry_during_the_day_In_the_evening']) == 1:
+            features.append('When_are_you_hungry_during_the_day_In_the_evening')
+            tmp_dict['When_are_you_hungry_during_the_day_In_the_evening'] = 0
+        elif int(tmp_dict['Do_you_play_a_sport_at_least_5_hours/week_Yes']) == 1:
+            features.append('Do_you_play_a_sport_at_least_5_hours/week_Yes')
+            tmp_dict['Do_you_play_a_sport_at_least_5_hours/week_Yes'] = 0
+        elif int(tmp_dict['Fresh_cheeses_Yes']) == 1:
+            features.append('Fresh_cheeses_Yes')
+            tmp_dict['Fresh_cheeses_Yes'] = 0
+        elif int(tmp_dict["Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Never"]) == 1:
+            features.append("Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Never")
+            tmp_dict["Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Never"] = 0
+
+        elif int(tmp_dict['Fish_Yes']) == 1:
+            features.append('Fish_Yes')
+            tmp_dict['Fish_Yes'] = 0
+        elif int(tmp_dict['Tofu_Sometimes']) == 1:
+            features.append('Tofu_Sometimes')
+            tmp_dict['Tofu_Sometimes'] = 0
+        elif int(tmp_dict["Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Infrequent_1/month"]) == 1:
+            features.append("Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Infrequent_1/month")
+            tmp_dict["Do_you_happen_to_eat_uncontrollably_even_if_you're_not_hungry_Infrequent_1/month"] = 0
+        elif int(tmp_dict["Cow's_milk_Yes"]) == 1:
+            features.append("Cow's_milk_Yes")
+            tmp_dict["Cow's_milk_Yes"] = 0
+
+        elif int(tmp_dict['Do_you_eat_differently_at_the_weekend_I_cook_more_elaborate']) == 1:
+            features.append('Do_you_eat_differently_at_the_weekend_I_cook_more_elaborate')
+            tmp_dict['Do_you_eat_differently_at_the_weekend_I_cook_more_elaborate'] = 0
+        elif int(tmp_dict['Tofu_Yes']) == 1:
+            features.append('Tofu_Yes')
+            tmp_dict['Tofu_Yes'] = 0
+        elif int(tmp_dict['Whole_grains_food_No']) == 1:
+            features.append('Whole_grains_food_No')
+            tmp_dict['Whole_grains_food_No'] = 0
+        elif int(tmp_dict['Eggs_Yes']) == 1:
+            features.append('Eggs_Yes')
+            tmp_dict['Eggs_Yes'] = 0
+        elif int(tmp_dict['Tofu_No']) == 1:
+            features.append('Tofu_No')
+            tmp_dict['Tofu_No'] = 0
+        elif int(tmp_dict['Cooked_vegetables_Yes']) == 1:
+            features.append('Cooked_vegetables_Yes')
+            tmp_dict['Cooked_vegetables_Yes'] = 0
+        elif int(tmp_dict["Cow's_milk_No"]) == 1:
+            features.append("Cow's_milk_No")
+            tmp_dict["Cow's_milk_No"] = 0
+        elif int(tmp_dict['Do_you_wake_up_to_eat_at_night_Every_day']) == 1:
+            features.append('Do_you_wake_up_to_eat_at_night_Every_day')
+            tmp_dict['Do_you_wake_up_to_eat_at_night_Every_day'] = 0
+        elif int(tmp_dict['Meat_Yes']) == 1:
+            features.append('Meat_Yes')
+            tmp_dict['Meat_Yes'] = 0
+        elif int(tmp_dict["Tofu_Don't_know"]) == 1:
+            features.append("Tofu_Don't_know")
+            tmp_dict["Tofu_Don't_know"] = 0
+        elif int(tmp_dict['Fish_No']) == 1:
+            features.append('Fish_No')
+            tmp_dict['Fish_No'] = 0
+        elif int(tmp_dict['Nuts_Sometimes']) == 1:
+            features.append('Nuts_Sometimes')
+            tmp_dict['Nuts_Sometimes'] = 0
+        elif int(tmp_dict['Do_you_eat_differently_at_the_weekend_Yes_I_eat_at_restaurants']) == 1:
+            features.append('Do_you_eat_differently_at_the_weekend_Yes_I_eat_at_restaurants')
+            tmp_dict['Do_you_eat_differently_at_the_weekend_Yes_I_eat_at_restaurants'] = 0
+        elif int(tmp_dict['SEX_F']) == 1:
+            features.append('SEX_F')
+            tmp_dict['SEX_F'] = 0
+        elif int(tmp_dict['SEX_M']) == 1:
+            features.append('SEX_M')
+            tmp_dict['SEX_M'] = 0
+        elif int(tmp_dict["When_are_you_hungry_during_the_day_I'm_always_hungry"]) == 1:
+            features.append("When_are_you_hungry_during_the_day_I'm_always_hungry")
+            tmp_dict["When_are_you_hungry_during_the_day_I'm_always_hungry"] = 0
+        elif int(tmp_dict['Low-fat_white_yogurt_Yes']) == 1:
+            features.append('Low-fat_white_yogurt_Yes')
+            tmp_dict['Low-fat_white_yogurt_Yes'] = 0
+        elif int(tmp_dict['Do_you_eat_differently_at_the_weekend_No']) == 1:
+            features.append('Do_you_eat_differently_at_the_weekend_No')
+            tmp_dict['Do_you_eat_differently_at_the_weekend_No'] = 0
+        elif int(tmp_dict['When_are_you_hungry_during_the_day_In_the_afternoon']) == 1:
+            features.append('When_are_you_hungry_during_the_day_In_the_afternoon')
+            tmp_dict['When_are_you_hungry_during_the_day_In_the_afternoon'] = 0
+        elif int(tmp_dict['Low-fat_white_yogurt_No']) == 1:
+            features.append('Low-fat_white_yogurt_No')
+            tmp_dict['Low-fat_white_yogurt_No'] = 0
+        elif int(tmp_dict['Do_you_ever_miss_meals_Yes_breakfast']) == 1:
+            features.append('Do_you_ever_miss_meals_Yes_breakfast')
+            tmp_dict['Do_you_ever_miss_meals_Yes_breakfast'] = 0
+        elif int(tmp_dict['Cooked_vegetables_No']) == 1:
+            features.append('Cooked_vegetables_No')
+            tmp_dict['Cooked_vegetables_No'] = 0
+        elif int(tmp_dict['Fish_Sometimes']) == 1:
+            features.append('Fish_Sometimes')
+            tmp_dict['Fish_Sometimes'] = 0
+        elif int(tmp_dict['Processed_Meat_es_prosciutto_Sometimes']) == 1:
+            features.append('Processed_Meat_es_prosciutto_Sometimes')
+            tmp_dict['Processed_Meat_es_prosciutto_Sometimes'] = 0
+        elif int(tmp_dict['Nuts_No']) == 1:
+            features.append('Nuts_No')
+            tmp_dict['Nuts_No'] = 0
+        elif int(tmp_dict['Low-fat_white_yogurt_Sometimes']) == 1:
+            features.append('Low-fat_white_yogurt_Sometimes')
+            tmp_dict['Low-fat_white_yogurt_Sometimes'] = 0
+        elif int(tmp_dict['Do_you_ever_miss_meals_Yes']) == 1:
+            features.append('Do_you_ever_miss_meals_Yes')
+            tmp_dict['Do_you_ever_miss_meals_Yes'] = 0
+        elif int(tmp_dict['Meat_No']) == 1:
+            features.append('Meat_No')
+            tmp_dict['Meat_No'] = 0
+        elif int(tmp_dict['Processed_Meat_es_prosciutto_No']) == 1:
+            features.append('Processed_Meat_es_prosciutto_No')
+            tmp_dict['Processed_Meat_es_prosciutto_No'] = 0
+        cnt2 += 1
 
     final_df = pd.DataFrame(final_dict, index=[0]).reset_index()
 
     final_df = final_df.drop('index', axis=1)
 
-    return final_df
+    return [final_df, features]
