@@ -8,10 +8,6 @@
       <change beforePath="$PROJECT_DIR$/../.idea/eating-habits-tracker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/eating-habits-tracker.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/answers.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/answers.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,9 +17,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="Python Script" />
         <option value="HTML File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -61,7 +57,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "artem__branch",
-    "last_opened_file_path": "D:/Machine learning/01-homework.ipynb",
+    "last_opened_file_path": "D:/Project Habbits/eating-habits-tracker/site",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -147,7 +143,9 @@
       <workItem from="1711643594346" duration="3983000" />
       <workItem from="1711663406410" duration="37000" />
       <workItem from="1711663465466" duration="2691000" />
-      <workItem from="1711721976822" duration="15279000" />
+      <workItem from="1711721976822" duration="15686000" />
+      <workItem from="1711738294033" duration="684000" />
+      <workItem from="1712929327544" duration="1537000" />
     </task>
     <servers />
   </component>
