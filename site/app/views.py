@@ -132,7 +132,7 @@ def answers():
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
-    account = YandexGPTLite('b1gcghjsok0u7pp94plu', 'y0_AgAEA7qkP0WqAATuwQAAAAEAKm7pAABo1V6HejhPmpns95QMCEdmlEb2QA')
+    account = YandexGPTLite('your_secret_key', 'your_secret_key')
     text = account.create_completion(prompt, '0.6')
     text1 = ''.join(text.split(":")[1:])
     return text1
