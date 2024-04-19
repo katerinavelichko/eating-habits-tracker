@@ -20,6 +20,7 @@ from joblib import load
 from sklearn.ensemble import RandomForestClassifier
 import os
 import constants
+import requests
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_directory, 'rf_model.joblib')
@@ -131,11 +132,38 @@ def answers():
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
-
-    account = YandexGPTLite('your_secret_key', 'your_secret_key')
+    account = YandexGPTLite('b1gcghjsok0u7pp94plu', 'y0_AgAEA7qkP0WqAATuwQAAAAEAKm7pAABo1V6HejhPmpns95QMCEdmlEb2QA')
     text = account.create_completion(prompt, '0.6')
     text1 = ''.join(text.split(":")[1:])
     return text1
+
+
+@app.route("/profile/tracker")
+def tracker():
+    api_key = '0YxRi3d18MNz4gCrOT7ROtD0rTMu94TyKsvc9XBQ'
+    search_query = 'apple strudel'
+    g = 200
+    context = {}
+    url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={search_query}'
+
+    response = requests.get(url)
+
+    nutrients = {'Energy': 0, 'Protein': 0, 'Total lipid (fat)': 0, 'Carbohydrate, by difference': 0,
+                 'Fiber, total dietary': 0, 'Total Sugars': 0}
+    units = {'Energy': 'kcal', 'Protein': 'g', 'Total lipid (fat)': 'g', 'Carbohydrate, by difference': 'g',
+             'Fiber, total dietary': 'g', 'Total Sugars': 'g'}
+
+    if response.status_code == 200:
+        data = response.json()
+        for nutrient in data['foods'][0]['foodNutrients']:
+            if nutrient['nutrientName'] in nutrients.keys():
+                nutrients[nutrient['nutrientName']] = nutrient['value']
+        for key in nutrients.keys():
+            context[key.replace(' ', '').replace(',', '').replace('(', '').replace(')', '')] = [key, format(
+                nutrients[key] / 100 * g, '.2f'), units[key]]
+    else:
+        print('Ошибка при запросе к API:', response.status_code)
+    return render_template("tracker.html", **context)
 
 
 # @app.route("/signup/success")
