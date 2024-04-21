@@ -64,6 +64,11 @@ def login():
     return render_template("login.html", **context)
 
 
+@app.route("/diary")
+@login_required
+def tracker_form():
+    return render_template("tracker_form.html")
+
 @app.route("/questions")
 @login_required
 def surveys():
@@ -140,7 +145,7 @@ def answers():
 
 @app.route("/profile/tracker")
 def tracker():
-    api_key = 'your_api'
+    api_key = 'api-key'
     search_query = 'apple strudel'
     g = 200
     context = {}
@@ -155,9 +160,9 @@ def tracker():
 
     if response.status_code == 200:
         data = response.json()
-        for nutrient in data['foods'][0]['foodNutrients']:
-            if nutrient['nutrientName'] in nutrients.keys():
-                nutrients[nutrient['nutrientName']] = nutrient['value']
+        for name in data['foods'][0]['foodNutrients']:
+            if name['nutrientName'] in nutrients.keys():
+                nutrients[name['nutrientName']] = name['value']
         for key in nutrients.keys():
             context[key.replace(' ', '').replace(',', '').replace('(', '').replace(')', '')] = [key, format(
                 nutrients[key] / 100 * g, '.2f'), units[key]]

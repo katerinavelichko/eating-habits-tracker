@@ -367,7 +367,6 @@ def make_df_for_model(current_user, QuestionsSleep):
         elif int(tmp_dict["Cow's_milk_Yes"]) == 1:
             features.append("Cow's_milk_Yes")
             tmp_dict["Cow's_milk_Yes"] = 0
-
         elif int(tmp_dict['Do_you_eat_differently_at_the_weekend_I_cook_more_elaborate']) == 1:
             features.append('Do_you_eat_differently_at_the_weekend_I_cook_more_elaborate')
             tmp_dict['Do_you_eat_differently_at_the_weekend_I_cook_more_elaborate'] = 0
