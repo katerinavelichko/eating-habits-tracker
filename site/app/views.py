@@ -9,6 +9,9 @@ from flask import (
 )
 from flask_login import login_required, login_user, logout_user, current_user
 from app import app, login_manager, db
+from app.config import get_config
+
+config = get_config()
 from yandexgptlite import YandexGPTLite
 
 from .UserLogin import UserLogin
@@ -133,6 +136,7 @@ def receive_callories_from_forms():
     # form = QuestionsSleep()
     # user_id = current_user.get_id()
     # form.add_question(user_id, data)
+    print(data)
     return data
 
 
@@ -147,12 +151,11 @@ def answers():
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
-    config = configparser.ConfigParser()
-    config.read("config.ini")
-    account = YandexGPTLite(config["yandexgpt"]["key1"], config["yandexgpt"]["key2"])
+    account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
     text = account.create_completion(prompt, '0.6')
     text1 = ''.join(text.split(":")[1:])
     return text1
+
 
 
 @app.route("/profile/tracker")
