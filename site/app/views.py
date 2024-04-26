@@ -158,7 +158,7 @@ def answers():
                  keys[0] + "," + keys[1] + "," + keys[2]
     account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
     text = account.create_completion(prompt, '0.6')
-    text1 = ''.join(text.split(":")[1:])
+    text1 = '1. ' + ' '.join(text.split('**')[1:])
     return text1
 
 
