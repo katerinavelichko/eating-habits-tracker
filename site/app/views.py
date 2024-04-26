@@ -147,17 +147,22 @@ def answers():
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
-    config = configparser.ConfigParser()
-    config.read("config.ini")
-    account = YandexGPTLite(config["yandexgpt"]["key1"], config["yandexgpt"]["key2"])
+    # config = configparser.ConfigParser()
+    # config.read("config.ini")
+    # account = YandexGPTLite(config["yandexgpt"]["key1"], config["yandexgpt"]["key2"])
+    account = YandexGPTLite('b1gcghjsok0u7pp94plu', 'y0_AgAEA7qkP0WqAATuwQAAAAEAKm7pAABo1V6HejhPmpns95QMCEdmlEb2QA')
     text = account.create_completion(prompt, '0.6')
-    text1 = ''.join(text.split(":")[1:])
+    # text1 = ''.join(text.split(":")[1:])
+    text1 = '1. ' + ' '.join(text.split('**')[1:])
     return text1
 
 
 @app.route("/profile/tracker")
 def tracker():
-    api_key = config["apiusda"]["api"]
+    # config = configparser.ConfigParser()
+    # config.read("config.ini")
+    # api_key = config['apiusda']['api']
+    api_key = '0YxRi3d18MNz4gCrOT7ROtD0rTMu94TyKsvc9XBQ'
     search_query = 'apple strudel'
     g = 200
     context = {}
