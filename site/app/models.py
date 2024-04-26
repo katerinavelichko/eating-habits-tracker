@@ -79,8 +79,8 @@ class Diary(db.Model):
     date = db.Column(db.Date)
 
     @classmethod
-    def add_product(cls, product_name, grams):
+    def add_product(cls, product_name, grams, user_id ):
         today = date.today()
-        product = cls(product_name=product_name, grams=grams, date=today)
+        product = cls(user_id=user_id,product_name=product_name, grams=grams, date=today)
         db.session.add(product)
         db.session.commit()
