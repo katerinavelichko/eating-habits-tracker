@@ -16,7 +16,7 @@ from yandexgptlite import YandexGPTLite
 
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
-from .models import Users, QuestionsSleep
+from .models import Users, QuestionsSleep, Diary
 from .test import make_df_for_model
 
 from joblib import load
@@ -133,9 +133,14 @@ def receive_data_from_forms():
 @login_required
 def receive_callories_from_forms():
     data = request.get_json()
-    # form = QuestionsSleep()
-    # user_id = current_user.get_id()
-    # form.add_question(user_id, data)
+    form = Diary()
+    # [{'name': 'яблоко', 'value': 100}, {'name': 'груша', 'value': 200}]
+    user_id = current_user.get_id()
+    for products in data:
+        product_name = products['name']
+        grams = products['value']
+        form.add_product(product_name, grams, user_id)
+
     print(data)
     return data
 
