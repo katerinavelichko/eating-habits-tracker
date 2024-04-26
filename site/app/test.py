@@ -311,7 +311,7 @@ def make_df_for_model(current_user, QuestionsSleep):
 
     # итерируемся по всему массиву, за исключением последних 2-х, для них есть своя проверка
     for i in original[:-2]:
-        if len(features) < 3 and cnt1 < len(tmp_dict.keys()):
+        if len(features) >= 3 or cnt1 >= len(tmp_dict.keys()):
             break
 
         if int(tmp_dict['How_many_sugary_drinks_do_you_consume_per_day']) > 2:
@@ -324,7 +324,6 @@ def make_df_for_model(current_user, QuestionsSleep):
             features.append(i)
             tmp_dict[i] = 0
         cnt1 += 1
-
     final_df = pd.DataFrame(final_dict, index=[0]).reset_index()
 
     final_df = final_df.drop('index', axis=1)
