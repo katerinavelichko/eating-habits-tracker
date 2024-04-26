@@ -1,6 +1,7 @@
 from . import db
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from datetime import date
 
 
 class Users(db.Model):
@@ -68,4 +69,18 @@ class QuestionsSleep(db.Model):
         print(f'Добавлен новый вопрос')
 
 
+class Diary(db.Model):
+    __tablename__ = 'diary'
 
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    product_name = db.Column(db.String(200))
+    grams = db.Column(db.Integer)
+    date = db.Column(db.Date)
+
+    @classmethod
+    def add_product(cls, product_name, grams):
+        today = date.today()
+        product = cls(product_name=product_name, grams=grams, date=today)
+        db.session.add(product)
+        db.session.commit()
