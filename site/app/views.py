@@ -25,6 +25,7 @@ import os
 import constants
 import requests
 import configparser
+from datetime import date
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_directory, 'rf_model.joblib')
@@ -145,6 +146,7 @@ def receive_callories_from_forms():
     return data
 
 
+
 @app.route("/profile/answers", methods=["GET", "POST"])
 @login_required
 def answers():
@@ -152,19 +154,22 @@ def answers():
     keys = make_df_for_model(current_user, QuestionsSleep)[1]
     if int(number) == 1:
         prompt = "Напиши в стиле наставления мне, что у меня хорошее качество сна, но чтобы его улучшить, нужно исправить 3 критерия:" + \
-                 keys[0] + "," + keys[1] + "," + keys[2]
+                keys[0] + "," + keys[1] + "," + keys[2]
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
     account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
     text = account.create_completion(prompt, '0.6')
-    text1 = ''.join(text.split(":")[1:])
+    text1 = '1. ' + ' '.join(text.split('')[1:])
     return text1
 
 
 
 @app.route("/profile/tracker")
 def tracker():
+    user_id = current_user.get_id()
+    cur_date = date.today()
+    user_products = Diary.get_products_today(user_id, cur_date)
     api_key = config["apiusda"]["api"]
     search_query = 'apple strudel'
     g = 200
