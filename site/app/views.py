@@ -21,6 +21,7 @@ from sklearn.ensemble import RandomForestClassifier
 import os
 import constants
 import requests
+import configparser
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_directory, 'rf_model.joblib')
@@ -125,6 +126,15 @@ def receive_data_from_forms():
     form.add_question(user_id, data)
     return data
 
+@app.route("/receive_callories", methods=["POST", "GET"])
+@login_required
+def receive_callories_from_forms():
+    data = request.get_json()
+    # form = QuestionsSleep()
+    # user_id = current_user.get_id()
+    # form.add_question(user_id, data)
+    return data
+
 
 @app.route("/profile/answers", methods=["GET", "POST"])
 @login_required
@@ -137,7 +147,9 @@ def answers():
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
-    account = YandexGPTLite('your_secret_key', 'your_secret_key')
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+    account = YandexGPTLite(config["yandexgpt"]["key1"], config["yandexgpt"]["key2"])
     text = account.create_completion(prompt, '0.6')
     text1 = ''.join(text.split(":")[1:])
     return text1
@@ -145,7 +157,7 @@ def answers():
 
 @app.route("/profile/tracker")
 def tracker():
-    api_key = 'api-key'
+    api_key = config["apiusda"]["api"]
     search_query = 'apple strudel'
     g = 200
     context = {}
