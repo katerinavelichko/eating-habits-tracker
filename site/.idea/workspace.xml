@@ -7,7 +7,9 @@
     <list default="true" id="20ef2397-d91d-4edd-8078-537843276f8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../.idea/eating-habits-tracker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/eating-habits-tracker.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/answers.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/answers.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/tracker.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/tracker.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +20,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
-        <option value="HTML File" />
         <option value="CSS File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -48,31 +50,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Flask server.site.executor": "Run",
-    "Python.site.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "artem__branch",
-    "last_opened_file_path": "D:/Project Habbits/eating-habits-tracker/site",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Flask server.site.executor&quot;: &quot;Run&quot;,
+    &quot;Python.site.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;artem__branch&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Project Habbits/eating-habits-tracker/site&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Flask server.site">
     <configuration name="site" type="PythonConfigurationType" factoryName="Python">
       <module name="site" />
@@ -145,7 +147,11 @@
       <workItem from="1711663465466" duration="2691000" />
       <workItem from="1711721976822" duration="15686000" />
       <workItem from="1711738294033" duration="684000" />
-      <workItem from="1712929327544" duration="1537000" />
+      <workItem from="1712929327544" duration="2507000" />
+      <workItem from="1713289152967" duration="65000" />
+      <workItem from="1713527783750" duration="4197000" />
+      <workItem from="1713557066479" duration="599000" />
+      <workItem from="1713696633155" duration="5867000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}tracker{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="../static/css/profile.css">
+<div class=" justify-content-center">
+    <br>
+    <h1 style="font-weight:bold; color:blue;">Дневник калорий</h1>
+    <h3>{{ Energy.0 }} {{ Energy.1 }} {{ Energy.2}}</h3>
+    <h3>{{ Protein.0 }} {{ Protein.1 }} {{ Protein.2}}</h3>
+    <h3>{{ Totallipidfat.0 }} {{ Totallipidfat.1 }} {{ Totallipidfat.2}}</h3>
+    <h3>{{ Carbohydratebydifference.0 }} {{ Carbohydratebydifference.1 }} {{ Carbohydratebydifference.2}}</h3>
+    <h3>{{ Fibertotaldietary.0 }} {{ Fibertotaldietary.1 }} {{ Fibertotaldietary.2}}</h3>
+    <h3>{{ TotalSugars.0 }} {{ TotalSugars.1 }} {{ TotalSugars.2}}</h3>
+</div>
+{% endblock %}
