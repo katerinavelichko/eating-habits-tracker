@@ -9,11 +9,14 @@ from flask import (
 )
 from flask_login import login_required, login_user, logout_user, current_user
 from app import app, login_manager, db
+from app.config import get_config
+
+config = get_config()
 from yandexgptlite import YandexGPTLite
 
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
-from .models import Users, QuestionsSleep
+from .models import Users, QuestionsSleep, Diary
 from .test import make_df_for_model
 
 from joblib import load
@@ -130,9 +133,15 @@ def receive_data_from_forms():
 @login_required
 def receive_callories_from_forms():
     data = request.get_json()
-    # form = QuestionsSleep()
-    # user_id = current_user.get_id()
-    # form.add_question(user_id, data)
+    form = Diary()
+    # [{'name': 'яблоко', 'value': 100}, {'name': 'груша', 'value': 200}]
+    user_id = current_user.get_id()
+    for products in data:
+        product_name = products['name']
+        grams = products['value']
+        form.add_product(product_name, grams, user_id)
+
+    print(data)
     return data
 
 
@@ -147,22 +156,16 @@ def answers():
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
-    # config = configparser.ConfigParser()
-    # config.read("config.ini")
-    # account = YandexGPTLite(config["yandexgpt"]["key1"], config["yandexgpt"]["key2"])
-    account = YandexGPTLite('b1gcghjsok0u7pp94plu', 'y0_AgAEA7qkP0WqAATuwQAAAAEAKm7pAABo1V6HejhPmpns95QMCEdmlEb2QA')
+    account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
     text = account.create_completion(prompt, '0.6')
-    # text1 = ''.join(text.split(":")[1:])
-    text1 = '1. ' + ' '.join(text.split('**')[1:])
+    text1 = ''.join(text.split(":")[1:])
     return text1
+
 
 
 @app.route("/profile/tracker")
 def tracker():
-    # config = configparser.ConfigParser()
-    # config.read("config.ini")
-    # api_key = config['apiusda']['api']
-    api_key = '0YxRi3d18MNz4gCrOT7ROtD0rTMu94TyKsvc9XBQ'
+    api_key = config["apiusda"]["api"]
     search_query = 'apple strudel'
     g = 200
     context = {}
