@@ -79,8 +79,20 @@ class Diary(db.Model):
     date = db.Column(db.Date)
 
     @classmethod
-    def add_product(cls, product_name, grams):
+    def add_product(cls, product_name, grams, user_id):
         today = date.today()
-        product = cls(product_name=product_name, grams=grams, date=today)
+        product = cls(user_id=user_id, product_name=product_name, grams=grams, date=today)
         db.session.add(product)
         db.session.commit()
+
+    @classmethod
+    def get_products_today(cls, user_id, cur_date):
+        products = cls.query.filter_by(user_id=user_id, date=cur_date).all()
+        products_list = []
+        for product in products:
+            product_dict = {
+                'product_name': product.product_name,
+                'grams': product.grams
+            }
+            products_list.append(product_dict)
+        return products_list
