@@ -3,14 +3,54 @@
 {% block title %}tracker{% endblock %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="../static/css/profile.css">
-<div class=" justify-content-center">
+<link rel="stylesheet" type="text/css" href="../static/css/callories.css">
+<!--<div class=" justify-content-center">-->
+<!--    <br>-->
+<!--    <h1 style="font-weight:bold; color:blue;">Дневник калорий</h1>-->
+
+<!--    <ul>-->
+<!--        {% for product in products %}-->
+<!--        <li>-->
+<!--            <h3>{{ product.product_name }} </h3>-->
+<!--            <h3>{{ product.grams  }} грамм </h3>-->
+<!--            <h3>{{ product.Energy.0 }} {{ product.Energy.1 }} {{ product.Energy.2}}</h3>-->
+<!--            <h3>{{ product.Protein.0 }} {{ product.Protein.1 }} {{ product.Protein.2}}</h3>-->
+<!--            <h3>{{ product.Totallipidfat.0 }} {{ product.Totallipidfat.1 }} {{ product.Totallipidfat.2}}</h3>-->
+<!--            <h3>{{ product.Carbohydratebydifference.0 }} {{ product.Carbohydratebydifference.1 }} {{ product.Carbohydratebydifference.2}}</h3>-->
+<!--            <h3>{{ product.Fibertotaldietary.0 }} {{ product.Fibertotaldietary.1 }} {{ product.Fibertotaldietary.2}}</h3>-->
+<!--            <h3>{{ product.TotalSugars.0 }} {{ product.TotalSugars.1 }} {{ product.TotalSugars.2}}</h3>-->
+<!--        </li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+
+<!--</div>-->
+<table class="table" summary="Daily nutrion" border="1">
+    <caption class="caption">Дневник калорий</caption>
     <br>
-    <h1 style="font-weight:bold; color:blue;">Дневник калорий</h1>
-    <h3>{{ Energy.0 }} {{ Energy.1 }} {{ Energy.2}}</h3>
-    <h3>{{ Protein.0 }} {{ Protein.1 }} {{ Protein.2}}</h3>
-    <h3>{{ Totallipidfat.0 }} {{ Totallipidfat.1 }} {{ Totallipidfat.2}}</h3>
-    <h3>{{ Carbohydratebydifference.0 }} {{ Carbohydratebydifference.1 }} {{ Carbohydratebydifference.2}}</h3>
-    <h3>{{ Fibertotaldietary.0 }} {{ Fibertotaldietary.1 }} {{ Fibertotaldietary.2}}</h3>
-    <h3>{{ TotalSugars.0 }} {{ TotalSugars.1 }} {{ TotalSugars.2}}</h3>
-</div>
+    <tr>
+
+        <th> Продукт</th>
+        <th>Граммы (г)</th>
+        <th>Калории (ккал)</th>
+        <th>Белки (г)</th>
+        <th>Жиры (г)</th>
+        <th>Углеводы (г)</th>
+        <th>Клетчатка (г)</th>
+        <th>Сахар (г)</th>
+    </tr>
+
+    {% for product in products %}
+    <tr>
+        <td ><b class="eat">{{ product.product_name }}</b></td>
+        <td>{{ product.grams  }}</td>
+        <td>{{ product.Energy.1 }}</td>
+        <td>{{ product.Protein.1 }}</td>
+        <td>{{ product.Totallipidfat.1 }}</td>
+        <td>{{ product.Carbohydratebydifference.1 }}</td>
+        <td>{{ product.Fibertotaldietary.1 }}</td>
+        <td>{{ product.TotalSugars.1 }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
 {% endblock %}

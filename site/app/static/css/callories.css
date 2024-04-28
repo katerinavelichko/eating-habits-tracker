@@ -1,0 +1,17 @@
+.table {
+  background-color: #be4;
+  margin: auto;
+  width: 70%;
+  text-align: center;
+
+}
+.eat {
+  display: block;
+  margin: 9px 0px;
+}
+
+.caption {
+  color: blue;
+  font-size: 8vh;
+}
+

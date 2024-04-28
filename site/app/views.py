@@ -17,7 +17,7 @@ from yandexgptlite import YandexGPTLite
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
 from .models import Users, QuestionsSleep, Diary
-from .test import make_df_for_model
+from .test import make_df_for_model, translator
 
 from joblib import load
 from sklearn.ensemble import RandomForestClassifier
@@ -73,6 +73,7 @@ def login():
 @login_required
 def tracker_form():
     return render_template("tracker_form.html")
+
 
 @app.route("/questions")
 @login_required
@@ -130,6 +131,7 @@ def receive_data_from_forms():
     form.add_question(user_id, data)
     return data
 
+
 @app.route("/receive_callories", methods=["POST", "GET"])
 @login_required
 def receive_callories_from_forms():
@@ -146,7 +148,6 @@ def receive_callories_from_forms():
     return data
 
 
-
 @app.route("/profile/answers", methods=["GET", "POST"])
 @login_required
 def answers():
@@ -154,7 +155,7 @@ def answers():
     keys = make_df_for_model(current_user, QuestionsSleep)[1]
     if int(number) == 1:
         prompt = "Напиши в стиле наставления мне, что у меня хорошее качество сна, но чтобы его улучшить, нужно исправить 3 критерия:" + \
-                keys[0] + "," + keys[1] + "," + keys[2]
+                 keys[0] + "," + keys[1] + "," + keys[2]
     else:
         prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
                  keys[0] + "," + keys[1] + "," + keys[2]
@@ -164,35 +165,44 @@ def answers():
     return text1
 
 
-
 @app.route("/profile/tracker")
 def tracker():
     user_id = current_user.get_id()
     cur_date = date.today()
     user_products = Diary.get_products_today(user_id, cur_date)
-    api_key = config["apiusda"]["api"]
-    search_query = 'apple strudel'
-    g = 200
+    user_products_eng = translator(user_products)
     context = {}
-    url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={search_query}'
+    api_key = config["apiusda"]["api"]
+    for i in range(len(user_products_eng)):
+        search_query = user_products_eng[i]['product_name']
+        g = user_products_eng[i]['grams']
+        url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={search_query}'
+        response = requests.get(url)
 
-    response = requests.get(url)
+        nutrients = {'Energy': 0, 'Protein': 0, 'Total lipid (fat)': 0, 'Carbohydrate, by difference': 0,
+                     'Fiber, total dietary': 0, 'Total Sugars': 0}
+        units = {'Energy': 'ккал', 'Protein': 'г', 'Total lipid (fat)': 'г', 'Carbohydrate, by difference': 'г',
+                 'Fiber, total dietary': 'г', 'Total Sugars': 'г'}
+        nutrients_ru = {'Energy': 'Калории', 'Protein': 'Белки', 'Total lipid (fat)': 'Жиры',
+                        'Carbohydrate, by difference': 'Углеводы',
+                        'Fiber, total dietary': 'Клетчатка', 'Total Sugars': 'Сахар'}
 
-    nutrients = {'Energy': 0, 'Protein': 0, 'Total lipid (fat)': 0, 'Carbohydrate, by difference': 0,
-                 'Fiber, total dietary': 0, 'Total Sugars': 0}
-    units = {'Energy': 'kcal', 'Protein': 'g', 'Total lipid (fat)': 'g', 'Carbohydrate, by difference': 'g',
-             'Fiber, total dietary': 'g', 'Total Sugars': 'g'}
-
-    if response.status_code == 200:
-        data = response.json()
-        for name in data['foods'][0]['foodNutrients']:
-            if name['nutrientName'] in nutrients.keys():
-                nutrients[name['nutrientName']] = name['value']
-        for key in nutrients.keys():
-            context[key.replace(' ', '').replace(',', '').replace('(', '').replace(')', '')] = [key, format(
-                nutrients[key] / 100 * g, '.2f'), units[key]]
-    else:
-        print('Ошибка при запросе к API:', response.status_code)
+        if response.status_code == 200:
+            data = response.json()
+            features = {}
+            for name in data['foods'][0]['foodNutrients']:
+                if name['nutrientName'] in nutrients.keys():
+                    nutrients[name['nutrientName']] = name['value']
+            for key in nutrients.keys():
+                features[key.replace(' ', '').replace(',', '').replace('(', '').replace(')', '')] = [nutrients_ru[key],
+                                                                                                     format(nutrients[
+                                                                                                                key] / 100 * g,
+                                                                                                            '.2f'),
+                                                                                                     units[key]]
+            user_products[i].update(features)
+    context['products'] = []
+    for product in user_products:
+        context['products'].append(product)
     return render_template("tracker.html", **context)
 
 
