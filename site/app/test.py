@@ -1,6 +1,9 @@
 import json
 import pandas as pd
 import requests
+from app.config import get_config
+
+config = get_config()
 
 
 def make_df_for_model(current_user, QuestionsSleep):
@@ -332,11 +335,9 @@ def make_df_for_model(current_user, QuestionsSleep):
     return [final_df, features]
 
 
-def translator(user_products):
+def translator(user_products: list):
     API_KEY = config["yandextranslate"]["api"]
-    text = [key for key in user_products.keys()]
-    grams = [val for val in user_products.values()]
-    res, translated_text = [], []
+    res = []
 
     source_lang = 'ru'
     target_lang = 'en'
@@ -345,22 +346,22 @@ def translator(user_products):
     url = 'https://translate.api.cloud.yandex.net/translate/v2/translate'
     headers = {'Authorization': f'Api-Key {API_KEY}', 'Content-Type': 'application/json'}
 
-    data = {
-        'sourceLanguageCode': source_lang,
-        'targetLanguageCode': target_lang,
-        'format': format_type,
-        'texts': [text]
-    }
+    for product in user_products:
+        text = product['product_name']
+        grams = product['grams']
 
-    response = requests.post(url, headers=headers, data=json.dumps(data))
+        data = {
+            'sourceLanguageCode': source_lang,
+            'targetLanguageCode': target_lang,
+            'format': format_type,
+            'texts': [text]
+        }
 
-    if response.status_code == 200:
-        translated_text = [response.json()['translations'][i]['text'] for i in range(len(text))]
-    else:
-        print("Error:", response.status_code)
-        print("Response content:", response.text)
+        response = requests.post(url, headers=headers, data=json.dumps(data))
 
-    for i, j in zip(translated_text, grams):
-        res.append({'product_name': i, 'grams': j})
-
+        if response.status_code == 200:
+            translated_text = response.json()['translations'][0]['text']
+            res.append({'product_name': translated_text, 'grams': grams})
+        else:
+            print(response.status_code, response.text)
     return res
