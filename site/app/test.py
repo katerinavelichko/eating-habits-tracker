@@ -332,10 +332,10 @@ def make_df_for_model(current_user, QuestionsSleep):
     return [final_df, features]
 
 
-def translator(user_products):
+def translator(user_products: list):
     API_KEY = config["yandextranslate"]["api"]
-    text = [key for key in user_products.keys()]
-    grams = [val for val in user_products.values()]
+    text = [list(key.keys())[0] for key in user_products]
+    grams = [list(val.values())[0] for val in user_products]
     res, translated_text = [], []
 
     source_lang = 'ru'
