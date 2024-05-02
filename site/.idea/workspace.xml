@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20ef2397-d91d-4edd-8078-537843276f8f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/static/css/callories.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/css/profile1.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/calories.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/static/images/user.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c2001d4a-6ea7-42d0-8f28-7e21d9f522c6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c2001d4a-6ea7-42d0-8f28-7e21d9f522c6.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/includes/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/includes/navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/tracker.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/tracker.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/tracker_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/tracker_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +55,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Merging artem__branch",
+    "git-widget-placeholder": "artem__branch",
     "last_opened_file_path": "D:/Project Habbits/eating-habits-tracker/site",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -160,6 +151,8 @@
       <workItem from="1713696633155" duration="7702000" />
       <workItem from="1713774609123" duration="174000" />
       <workItem from="1714134248370" duration="7789000" />
+      <workItem from="1714458563256" duration="48000" />
+      <workItem from="1714675200445" duration="363000" />
     </task>
     <servers />
   </component>
