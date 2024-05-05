@@ -3,16 +3,65 @@
 {% block title %}profile{% endblock %}
 {% block content %}
     <link rel="stylesheet" type="text/css" href="../static/css/profile.css">
-    <div class=" justify-content-center">
-        <br>
-        <h1 style="font-weight:bold; color:blue;">Профиль</h1>
-        <br>
-        <h3>Login: {{ user.name }}</h3>
-        <h3>Email: {{ user.email }}</h3>
-        <br>
-        <br>
-        <h4>Ссылочка на ответы: <a href='/profile/answers'>клик</a> </h4>
-        <h4> <a href='/profile/tracker'>Дневник калорий</a> </h4>
+    <link href="https://fonts.googleapis.com/css?family=Arimo:400,700" rel="stylesheet">
+<script src="https://use.fontawesome.com/f56e4513c5.js"></script><link rel="stylesheet" href="../static/css/profile1.css">
+<!--    <div class=" justify-content-center">-->
+<!--        <br>-->
+<!--        <h1 style="font-weight:bold; color:blue;">Профиль</h1>-->
+<!--        <br>-->
+<!--        <h3>Login: {{ user.name }}</h3>-->
+<!--        <h3>Email: {{ user.email }}</h3>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <h4>Ссылочка на ответы: <a href='/profile/answers'>клик</a> </h4>-->
+<!--        <h4> <a href='/profile/tracker'>Дневник калорий</a> </h4>-->
 
+<!--    </div>-->
+<div class="container">
+  <br>
+  <br>
+  <br>
+  <div class="row cf">
+    <div id="card1" class="card four col">
+      <div class="image-wrapper"></div>
+      <h3 class="name">За сегодня у вас</h3>
+      <div class="info cf">
+        <div class="four col"><span class="number">100</span>Сюда калории</div>
+        <div class="four col"><span class="number">28</span>Сюда жиры</div>
+        <div class="four col"><span class="number">179</span>Сюда углеводы</div>
+      </div>
+      <div class="options">
+        <ul>
+          <li><span class="icon"><i class="fa fa-fire" aria-hidden="true"></i></span><a href='/profile/tracker'>Дневник калорий</a></li>
+          <li><span class="icon"><i class="fa fa-bed" aria-hidden="true"></i></span><a href='/profile/answers'>Советы по сну</a></li>
+
+        </ul>
+      </div>
     </div>
+
+    <div id="card2" class="card four col">
+      <div class="header"></div>
+      <div class="wrapper">
+        <div class="image-wrapper"></div>
+        <h3 class="name">{{ user.name }}</h3>
+        <h3 class="name">{{ user.email }}</h3>
+<!--        <div class="info">-->
+<!--          <p>ля ля</p>-->
+<!--        </div>-->
+      </div>
+    </div>
+
+    <div id="card3" class="card four col">
+      <div class="header"></div>
+      <div class="wrapper">
+        <h2 class="name">Вы с нами уже</h2>
+      </div>
+      <div class="info cf">
+        <div class="four col">
+          <div class="number">2 дня</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
