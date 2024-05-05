@@ -233,25 +233,26 @@ html, body {
 
 #card3 .header {
     width: 100%;
-    height: 180px;
+    height: 100px;
     background-image: url("https://static.pexels.com/photos/9692/pexels-photo.jpeg");
     background-size: cover;
     background-repeat: no-repeat;
 }
 
 #card3 .wrapper {
-    padding: 0px 15px;
+    padding: 10px 100px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    text-align: center;
 }
 
 #card3 .name {
-    font-weight: 400;
+    font-weight: 100;
 }
 
 #card3 .info {
-    margin: 20px 0;
+    margin: 20px 100px;
     text-align: center;
 }
 
@@ -259,7 +260,7 @@ html, body {
     background-color:#a2ee44 ;
     color: #fff;
     border-radius: 100%;
-    width: 70px;
+    width: 100px;
     height: 70px;
     line-height: 70px;
     text-align: center;
