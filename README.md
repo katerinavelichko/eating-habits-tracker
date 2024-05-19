@@ -33,4 +33,3 @@
    - Выполните обновление базы данных:
        #### `sudo docker-compose exec backend flask db upgrade`
    - Перейдите http://l981127k.beget.tech/
-   
