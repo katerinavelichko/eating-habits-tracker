@@ -11,10 +11,11 @@ class Users(db.Model):
     name = db.Column(db.String(100))
     email = db.Column(db.String(120))
     password = db.Column(db.String(120))
+    date_of_registration = db.Column(db.Date)
 
     @classmethod
     def add_user(cls, name, email, password):
-        user = cls(name=name, email=email, password=password)
+        user = cls(name=name, email=email, password=password, date_of_registration=date.today())
         db.session.add(user)
         db.session.commit()
         print(f'Добавлен новый пользователь: {name}')

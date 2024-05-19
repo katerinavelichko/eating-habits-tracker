@@ -25,7 +25,7 @@ import os
 import constants
 import requests
 import configparser
-from datetime import date
+from datetime import date, timedelta
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_directory, 'rf_model.joblib')
@@ -86,9 +86,48 @@ def surveys():
 def profile():
     user_id = current_user.get_id()
     user = Users.query.get(user_id)
+    date_of_registration = user.date_of_registration
+    days = (date.today() - date_of_registration).days
     context = {
-        'user': user
+        'user': user,
+        'days': days
     }
+
+    user_id = current_user.get_id()
+    cur_date = date.today()
+    user_products = Diary.get_products_today(user_id, cur_date)
+    user_products_eng = translator(user_products)
+    api_key = config["apiusda"]["api"]
+    for i in range(len(user_products_eng)):
+        search_query = user_products_eng[i]['product_name']
+        g = user_products_eng[i]['grams']
+        url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={search_query}'
+        response = requests.get(url)
+
+        nutrients = {'Energy': 0, 'Protein': 0, 'Total lipid (fat)': 0, 'Carbohydrate, by difference': 0}
+
+        if response.status_code == 200:
+            data = response.json()
+            features = {}
+            for name in data['foods'][0]['foodNutrients']:
+                if name['nutrientName'] in nutrients.keys():
+                    nutrients[name['nutrientName']] = name['value']
+            for key in nutrients.keys():
+                features[key.replace(' ', '').replace(',', '').replace('(', '').replace(')', '')] = format(
+                    nutrients[key] / 100 * g, '.2f')
+            user_products[i].update(features)
+
+    energy, protein, fat, carbohydrates = 0, 0, 0, 0
+    for product in user_products:
+        energy += float(product['Energy'])
+        protein += float(product['Protein'])
+        fat += float(product['Totallipidfat'])
+        carbohydrates += float(product['Carbohydratebydifference'])
+
+    context['carbohydrates'] = int(carbohydrates)
+    context['protein'] = int(protein)
+    context['fat'] = int(fat)
+    context['energy'] = int(energy)
     return render_template("profile.html", **context)
 
 
@@ -162,7 +201,10 @@ def answers():
     account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
     text = account.create_completion(prompt, '0.6')
     text1 = '1. ' + ' '.join(text.split('**')[1:])
-    return text1
+    context = {
+        'text': text1
+    }
+    return render_template("sleep_answers.html", **context)
 
 
 @app.route("/profile/tracker")

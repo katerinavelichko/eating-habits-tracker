@@ -26,9 +26,9 @@
       <div class="image-wrapper"></div>
       <h3 class="name">За сегодня у вас</h3>
       <div class="info cf">
-        <div class="four col"><span class="number">100</span>Сюда калории</div>
-        <div class="four col"><span class="number">28</span>Сюда жиры</div>
-        <div class="four col"><span class="number">179</span>Сюда углеводы</div>
+        <div class="four col"><span class="number">{{ energy }}</span>Калорий</div>
+        <div class="four col"><span class="number">{{ protein }}</span> Белков (г)</div>
+        <div class="four col"><span class="number">{{ carbohydrates }}</span> Углеводов (г)</div>
       </div>
       <div class="options">
         <ul>
@@ -58,7 +58,7 @@
       </div>
       <div class="info cf">
         <div class="four col">
-          <div class="number">2 дня</div>
+          <div class="number">{{ days }} дней</div>
         </div>
       </div>
     </div>
