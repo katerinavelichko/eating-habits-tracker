@@ -33,7 +33,8 @@ model_path = os.path.join(current_directory, 'rf_model.joblib')
 # Load the model
 rf_model = load(model_path)
 
-
+import logging
+logging.basicConfig(level=logging.INFO)
 @login_manager.user_loader
 def load_user(user_id):
     print("load user")
@@ -142,7 +143,9 @@ def create_user():
     message = None
     form = CreateUserForm()
     if request.method == "POST":
+        print(form.email.data, form.name.data, form.password.data, form.validate_on_submit(), form.hidden_tag(), form.errors)
         if form.validate_on_submit():
+            # app.logger.info('1',form.hidden_tag())
             if not Users.query.filter_by(email=form.email.data).first():
                 email = form.email.data
                 name = form.name.data
@@ -152,6 +155,7 @@ def create_user():
             else:
                 return redirect(url_for("unsuccess"))
         else:
+            # app.logger.info('2',request.form)
             message = "Некорректный email"
     context = {
         "message": message,
