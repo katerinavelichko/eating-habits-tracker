@@ -260,6 +260,10 @@ def tracker():
 def unsuccess():
     return render_template("unsuccess.html")
 
+@app.route("/blog", methods=["GET", "POST"])
+def blog():
+    return render_template("blog.html")
+
 
 if __name__ == "__main__":
     db.create_all()
