@@ -97,3 +97,22 @@ class Diary(db.Model):
             }
             products_list.append(product_dict)
         return products_list
+
+
+class Posts(db.Model):
+    __tablename__ = 'posts'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    text = db.Column(db.Text)
+    title = db.Column(db.String(255))
+    description = db.Column(db.String(500))
+    tags = db.Column(db.String(500))
+    date_of_post = db.Column(db.Date)
+
+    @classmethod
+    def add_post(cls, text, title, description, tags, user_id):
+        today = date.today()
+        post = cls(user_id=user_id, text=text, title=title, description=description, tags=tags, date=today)
+        db.session.add(post)
+        db.session.commit()
