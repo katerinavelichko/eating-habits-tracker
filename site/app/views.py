@@ -16,7 +16,7 @@ from yandexgptlite import YandexGPTLite
 
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
-from .models import Users, QuestionsSleep, Diary
+from .models import Users, QuestionsSleep, Diary, Posts
 from .test import make_df_for_model, translator
 
 from joblib import load
@@ -95,7 +95,6 @@ def profile():
         'user': user,
         'days': days
     }
-
 
     cur_date = date.today()
     user_products = Diary.get_products_today(user_id, cur_date)
@@ -260,9 +259,28 @@ def tracker():
 def unsuccess():
     return render_template("unsuccess.html")
 
+
 @app.route("/blog", methods=["GET", "POST"])
 def blog():
-    return render_template("blog.html")
+    all_posts = Posts.query.order_by(Posts.date_of_post.desc()).all()
+    context = {}
+    context['posts'] = []
+    for post in all_posts:
+        post_dict = {}
+        txt = post.text
+        txt = txt[:207]
+        txt += '...'
+        post_dict['title'] = post.title
+        post_dict['text'] = txt
+        post_dict['description'] = post.description
+        post_dict['date_of_post'] = post.date_of_post
+        tags = post.tags
+        post_dict['tags'] = tags.split(', ')
+        user = Users.query.filter_by(id=post.user_id).first()
+        post_dict['name'] = user.name
+        context['posts'].append(post_dict)
+
+    return render_template("blog.html", **context)
 
 
 if __name__ == "__main__":
