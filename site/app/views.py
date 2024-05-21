@@ -33,6 +33,10 @@ model_path = os.path.join(current_directory, 'rf_model.joblib')
 # Load the model
 rf_model = load(model_path)
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -52,7 +56,6 @@ def soon():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    message = None
     if request.method == "POST":
         password = request.form["password"]
         email = request.form["email"]
@@ -65,8 +68,8 @@ def login():
             message = "Неверный email или пароль"
             context = {"message": message}
             return render_template("login.html", **context)
-    context = {"message": message}
-    return render_template("login.html", **context)
+
+    return render_template("login.html")
 
 
 @app.route("/diary")
@@ -93,7 +96,7 @@ def profile():
         'days': days
     }
 
-    user_id = current_user.get_id()
+
     cur_date = date.today()
     user_products = Diary.get_products_today(user_id, cur_date)
     user_products_eng = translator(user_products)
@@ -142,8 +145,10 @@ def create_user():
     message = None
     form = CreateUserForm()
     if request.method == "POST":
+        # print(form.validate_on_submit(), form.hidden_tag())
         if form.validate_on_submit():
-            if not Users.query.filter_by(email=form.email.data).first():
+            # app.logger.info('1',form.hidden_tag())
+            if (not Users.query.filter_by(email=form.email.data).first()):
                 email = form.email.data
                 name = form.name.data
                 password = form.password.data
@@ -152,6 +157,7 @@ def create_user():
             else:
                 return redirect(url_for("unsuccess"))
         else:
+            # app.logger.info('2',request.form)
             message = "Некорректный email"
     context = {
         "message": message,
@@ -163,9 +169,7 @@ def create_user():
 @login_required
 def receive_data_from_forms():
     data = request.get_json()
-
     form = QuestionsSleep()
-
     user_id = current_user.get_id()
     form.add_question(user_id, data)
     return data
@@ -183,7 +187,6 @@ def receive_callories_from_forms():
         grams = products['value']
         form.add_product(product_name, grams, user_id)
 
-    print(data)
     return data
 
 
