@@ -84,7 +84,7 @@
                                  var val = this.getValue();
                                  // Создание и отправка AJAX запроса
                                  var xhr = new XMLHttpRequest();
-                                 xhr.open('POST', '/receive_posts', true);
+                                 xhr.open('POST', '/receive_post', true);
                                  xhr.setRequestHeader('Content-Type', 'application/json');
                                  xhr.send(JSON.stringify(val));
                                  window.location.href = '/'

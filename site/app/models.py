@@ -2,7 +2,7 @@ from . import db
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import date
-
+from .test import search_images
 
 class Users(db.Model):
     __tablename__ = 'users'
@@ -109,10 +109,13 @@ class Posts(db.Model):
     description = db.Column(db.String(500))
     tags = db.Column(db.String(500))
     date_of_post = db.Column(db.Date)
+    photo = db.Column(db.String(500))
 
     @classmethod
     def add_post(cls, text, title, description, tags, user_id):
         today = date.today()
-        post = cls(user_id=user_id, text=text, title=title, description=description, tags=tags, date=today)
+        photo = search_images(tags[0])
+        tags = str(tags)
+        post = cls(user_id=user_id, text=text, title=title, description=description, tags=tags, date_of_post=today, photo=photo)
         db.session.add(post)
         db.session.commit()
