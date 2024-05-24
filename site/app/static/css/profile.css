@@ -7,6 +7,10 @@
     margin: auto;
 }
 
+.justify-content-center {
+    margin-top: 70px;
+}
+
 
 body {
     background: rgba(185, 250, 161, 0.15);

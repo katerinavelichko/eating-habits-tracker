@@ -170,17 +170,20 @@ def create_user():
     return render_template("form_users.html", form=form, **context)
 
 
-@app.route("/receive_posts", methods=["POST", "GET"])
+@app.route("/`receive_post", methods=["POST", "GET"])
 @login_required
 def receive_post_from_forms():
     data = request.get_json()
     form = Posts()
     user_id = current_user.get_id()
-    # text =
-    # description =
-    # tags =
-    # title =
-    # form.add_post(text, title, description, tags, user_id)
+
+    title = data['name']
+    text = data['blog']
+    abstract = data['abstract']
+    tags = data['tags']
+
+    form.add_post(text, title, abstract, tags, user_id)
+    return data
 
 
 @app.route("/receive_data", methods=["POST", "GET"])
@@ -281,7 +284,26 @@ def unsuccess():
 
 @app.route("/blog", methods=["GET", "POST"])
 def blog():
-    return render_template("blog.html")
+    all_posts = Posts.query.order_by(Posts.date_of_post.desc()).all()
+    context = {}
+    context['posts'] = []
+    for post in all_posts:
+        post_dict = {}
+        txt = post.text
+        txt = txt[:207]
+        txt += '...'
+        post_dict['title'] = post.title
+        post_dict['text'] = txt
+        post_dict['description'] = post.description
+        post_dict['date_of_post'] = post.date_of_post
+        tags = post.tags
+        post_dict['tags'] = tags.split(', ')
+        user = Users.query.filter_by(id=post.user_id).first()
+        post_dict['name'] = user.name
+        post_dict['photo'] = post.photo
+        context['posts'].append(post_dict)
+
+    return render_template("blog.html", **context)
 
 
 if __name__ == "__main__":
