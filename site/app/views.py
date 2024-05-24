@@ -170,7 +170,7 @@ def create_user():
     return render_template("form_users.html", form=form, **context)
 
 
-@app.route("/`receive_post", methods=["POST", "GET"])
+@app.route("/receive_post", methods=["POST", "GET"])
 @login_required
 def receive_post_from_forms():
     data = request.get_json()
@@ -301,9 +301,18 @@ def blog():
         user = Users.query.filter_by(id=post.user_id).first()
         post_dict['name'] = user.name
         post_dict['photo'] = post.photo
+        post_dict['id'] = post.id
         context['posts'].append(post_dict)
 
     return render_template("blog.html", **context)
+
+
+@app.route("/post/<int:post_id>", methods=["GET", "POST"])
+def post_pge(post_id):
+    post = Posts.query.filter_by(id=post_id).first()
+    context = {'post': post}
+
+    return render_template("post_page.html", **context)
 
 
 if __name__ == "__main__":
