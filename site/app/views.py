@@ -78,6 +78,12 @@ def tracker_form():
     return render_template("tracker_form.html")
 
 
+@app.route("/blog_post")
+@login_required
+def blog_post():
+    return render_template("add_post.html")
+
+
 @app.route("/questions")
 @login_required
 def surveys():
@@ -162,6 +168,19 @@ def create_user():
         "message": message,
     }
     return render_template("form_users.html", form=form, **context)
+
+
+@app.route("/receive_posts", methods=["POST", "GET"])
+@login_required
+def receive_post_from_forms():
+    data = request.get_json()
+    form = Posts()
+    user_id = current_user.get_id()
+    # text =
+    # description =
+    # tags =
+    # title =
+    # form.add_post(text, title, description, tags, user_id)
 
 
 @app.route("/receive_data", methods=["POST", "GET"])
