@@ -2,6 +2,7 @@ import json
 import pandas as pd
 import requests
 from app.config import get_config
+import requests
 
 config = get_config()
 
@@ -365,3 +366,28 @@ def translator(user_products: list):
         else:
             print(response.status_code, response.text)
     return res
+
+
+def search_images(query):
+    API_URL = 'https://pixabay.com/api/?key={api_key}&q={query}&image_type=photo'
+    api_key = config["pixabay"]["api"]
+    try:
+        url = API_URL.format(api_key=api_key, query=query)
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            search_results = data['hits']
+            if search_results:
+                print(search_results[0]['webformatURL'])
+
+            else:
+                print("нет результатов")
+                return None
+        else:
+            print("Ошибка:", response.status_code)
+            return None
+    except Exception as e:
+        print("ошибка:", e)
+        return None
+
+
