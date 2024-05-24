@@ -59,8 +59,9 @@
 {% for post in posts %}
 <div class="blog-card">
     <div class="meta">
-        <div class="photo"
-             style="background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-1.jpg)"></div>
+       <div class="photo" style="background-image: url('{{ post.photo }}');"></div>
+
+
         <ul class="details">
             <li class="author"><a href="#">{{ post.name }}</a></li>
             <li class="date">{{ post.date_of_post }}</li>

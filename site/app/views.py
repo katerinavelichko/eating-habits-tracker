@@ -297,6 +297,7 @@ def blog():
         post_dict['tags'] = tags.split(', ')
         user = Users.query.filter_by(id=post.user_id).first()
         post_dict['name'] = user.name
+        post_dict['photo'] = post.photo
         context['posts'].append(post_dict)
 
     return render_template("blog.html", **context)
