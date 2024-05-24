@@ -37,6 +37,18 @@
                         "rows": 6,
                         "cols": 80,
                         "required": true
+                    },
+                    "tags" : {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "tag": {
+                                    "title": "Тег:",
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -53,7 +65,12 @@
                     "blog": {
                         "type": "textarea",
                         "label": "Напишите тело статьи",
+                    },
+                    "tags": {
+                        "type": "array",
+                        "label": "Введите теги, которые описывают вашу статью"
                     }
+
                 },
                  "form": {
                      "attributes": {

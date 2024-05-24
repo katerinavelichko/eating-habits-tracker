@@ -170,17 +170,20 @@ def create_user():
     return render_template("form_users.html", form=form, **context)
 
 
-@app.route("/receive_posts", methods=["POST", "GET"])
+@app.route("/`receive_post", methods=["POST", "GET"])
 @login_required
 def receive_post_from_forms():
     data = request.get_json()
     form = Posts()
     user_id = current_user.get_id()
-    # text =
-    # description =
-    # tags =
-    # title =
-    # form.add_post(text, title, description, tags, user_id)
+
+    title = data['name']
+    text = data['blog']
+    abstract = data['abstract']
+    tags = data['tags']
+
+    form.add_post(text, title, abstract, tags, user_id)
+    return data
 
 
 @app.route("/receive_data", methods=["POST", "GET"])
