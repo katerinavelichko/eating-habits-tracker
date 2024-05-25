@@ -1,7 +1,9 @@
 body {
     background: rgba(185, 250, 161, 0.15);
 }
-
+.blog-containerr {
+    margin-top: 100px;
+}
 .card-cus {
     position: relative;
     min-height: 400px;
@@ -57,7 +59,7 @@ body {
 }
 
 .card-cus .cat {
-    background-color: #eb9635;
+    background-color: #5ad67d;;
     height: 30px;
     width: fit-content;
     border-radius: 20px;
@@ -152,7 +154,7 @@ body {
 }
 
 .card-cus .fab:hover {
-    background-color: #eb9635;
+    background-color: #5ad67d;
 }
 
 .card-cus .fab a {
@@ -192,7 +194,7 @@ body {
 }
 
 .card-cus button.cust-btn:hover {
-    background: #eb9635;
+    background: #5ad67d;
 }
 
 .card-cus .comments {
@@ -268,4 +270,27 @@ body {
     .card-cus button.cust-btn {
         letter-spacing: 1px;
     }
+}
+
+.read-more {
+    text-align: left;
+}
+
+.read-more a {
+    color: #171616;
+    display: inline-block;
+    position: relative;
+}
+
+.read-more a:after {
+    font-family: FontAwesome;
+    margin-left: -10px;
+    opacity: 0;
+    vertical-align: middle;
+    transition: margin 0.3s, opacity 0.3s;
+}
+
+.read-more a:hover:after {
+    margin-left: 5px;
+    opacity: 1;
 }

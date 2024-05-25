@@ -181,8 +181,10 @@ def receive_post_from_forms():
     text = data['blog']
     abstract = data['abstract']
     tags = data['tags']
+    tags_mas = [x['tag'] for x in tags]
+    tags_string = ', '.join(tags_mas)
 
-    form.add_post(text, title, abstract, tags, user_id)
+    form.add_post(text, title, abstract, tags_string, user_id)
     return data
 
 
@@ -307,12 +309,55 @@ def blog():
     return render_template("blog.html", **context)
 
 
+# @app.route("/post/<int:post_id>", methods=["GET", "POST"])
+# def post_pge(post_id):
+#     post = Posts.query.filter_by(id=post_id).first()
+#     user = Users.query.filter_by(id=post.user_id).first()
+#     tags = post.tags
+#     tags = tags.split(', ')
+#     context = {'post': post,
+#                'name': user.name,
+#                'tags': tags}
+#
+#     return render_template("post_page.html", **context)
+
+from .models import Comment  # Подставьте сюда вашу модель комментария и объект базы данных
+
+
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
-def post_pge(post_id):
+def post_page(post_id):
     post = Posts.query.filter_by(id=post_id).first()
-    context = {'post': post}
+    user = Users.query.filter_by(id=post.user_id).first()
+    tags = post.tags
+    tags = tags.split(', ')
+
+
+
+    comments = Comment.query.filter_by(post_id=post_id).all()
+    context = {'post': post,
+               'name': user.name,
+               'tags': tags,
+               'comments': comments}
 
     return render_template("post_page.html", **context)
+
+# @app.route('/adding_comment', methods=['POST'])
+# def adding_comment():
+#     comment_text = request.form['comment_text']
+#     user_id = current_user.get_id()
+#     Comment.add_comment(comment_text, 1, user_id)
+#     obj = Comment.add_comment(
+#         request.form['cinema_name'],
+#         request.form['cinema_address'],
+#         request.form['cinema_district']
+#     )
+#     data = {
+#         'status': 'success',
+#         'obj': obj,
+#         'id': obj[0]['id']
+#     }
+#     return data
+
 
 
 if __name__ == "__main__":

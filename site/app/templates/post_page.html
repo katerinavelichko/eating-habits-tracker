@@ -1,89 +1,70 @@
-{% extends 'base.html' %}
-
-{% block title %}блог страница {% endblock %}
-{% block content %}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}блог страница {% endblock %}</title>
+</head>
+<body>
+<p class="read-more">
+    <a href="{{ url_for('blog') }}">Вернуться к блогу</a>
+</p>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'>
 <link rel="stylesheet" type="text/css" href="../static/css/blog_page.css">
-<div class="card-cus pb-4">
-    <div class="thumbnail">
-        <img class="left"
-             src="https://cdn2.hubspot.net/hubfs/322787/Mychefcom/images/BLOG/Header-Blog/photo-culinaire-pexels.jpg"/>
-        <div class="d-lg-block d-none">
-            <h5>12</h5>
-            <h6>JANUARY</h6>
-            <h3>2022</h3>
-        </div>
-    </div>
-    <div class="right">
-        <h1>{{ post.title }}</h1>
-        <div class='d-flex'>
-            <div class="author me-1">
-                <h2><i class="fa-solid fa-circle-user me-2"></i>John Doe</h2>
-            </div>
-            <div class="cat">
-                <h2>Swing Trading</h2>
-            </div>
-            <div class="date ms-1 d-lg-none d-md-inline d-none">
-                <h2><i class="fa-solid fa-calendar me-2"></i>12 Jan, 2020</h2>
-            </div>
-            <div class="date ms-1 d-md-none d-inline">
-                <h2><i class="fa-solid fa-calendar me-2"></i>12 Jan</h2>
+<div class="blog-containerr">
+    <div class="card-cus pb-4">
+        <div class="thumbnail">
+            <img class="left"
+                 src="https://cdn2.hubspot.net/hubfs/322787/Mychefcom/images/BLOG/Header-Blog/photo-culinaire-pexels.jpg"/>
+            <div class="d-lg-block d-none">
+                <h3>{{ post.date_of_post }}</h3>
             </div>
         </div>
-        <div class="separator"></div>
-        <p>{{ post.text }}
-        </p>
-        <div class="separator"></div>
-        <div class="d-flex col-12 justify-content-between">
-            <textarea type="text" class="col-9" placeholder="Write a comment"></textarea>
-            <button class='cust-btn col-3' type="submit">Add
-                Comment
-            </button>
-        </div>
-        <div class="separator"></div>
-        <style>
+        <div class="right">
+            <h1>{{ post.title }}</h1>
+            <div class='d-flex'>
+                <div class="author me-1">
+                    <h2><i class="fa-solid fa-circle-user me-2"></i>{{ name }}</h2>
+                </div>
+                {% for tag in tags %}
+                <div class="cat">
+                    <h2>{{ tag }}</h2>
+                </div>
+                {% endfor %}
+                <div class="date ms-1 d-lg-none d-md-inline d-none">
+                    <h2><i class="fa-solid fa-calendar me-2"></i>12 Jan, 2020</h2>
+                </div>
+                <div class="date ms-1 d-md-none d-inline">
+                    <h2><i class="fa-solid fa-calendar me-2"></i>12 Jan</h2>
+                </div>
+            </div>
+            <div class="separator"></div>
+            <p>{{ post.text }}</p>
+            <div class="separator"></div>
+            <div class="d-flex col-12 justify-content-between">
+                <textarea type="text" class="col-9" placeholder="Write a comment"></textarea>
+                <button class='cust-btn col-3' type="submit">Add Comment</button>
+            </div>
 
-        </style>
-        <div class="comments pb-2">
-            <div class="single-comment p-2 mt-2">
-                <p class="mb-0 pt-0 name">Some Random Guy1</p>
-                <p class="pt-0 mb-0">4 Days ago</p>
-                <p>This is really great! I fully agree with what you wrote, and this is sure to help me out
-                    in
-                    the future. Thank you for posting this.</p>
-            </div>
-            <div class="single-comment p-2 mt-2">
-                <p class="mb-0 pt-0 name">Some Random Guy2</p>
-                <p class="pt-0 mb-0">4 Days ago</p>
-                <p>This is really great! I fully agree with what you wrote, and this is sure to help me out
-                    in
-                    the future. Thank you for posting this.</p>
-            </div>
-            <div class="single-comment p-2 mt-2">
-                <p class="mb-0 pt-0 name">Some Random Guy3</p>
-                <p class="pt-0 mb-0">4 Days ago</p>
-                <p>This is really great! I fully agree with what you wrote, and this is sure to help me out
-                    in
-                    the future. Thank you for posting this.</p>
-            </div>
-            <div class="single-comment p-2 mt-2">
-                <p class="mb-0 pt-0 name">Some Random Guy4</p>
-                <p class="pt-0 mb-0">4 Days ago</p>
-                <p>This is really great! I fully agree with what you wrote, and this is sure to help me out
-                    in
-                    the future. Thank you for posting this.</p>
-            </div>
-            <div class="single-comment p-2 mt-2">
-                <p class="mb-0 pt-0 name">Some Random Guy5</p>
-                <p class="pt-0 mb-0">4 Days ago</p>
-                <p>This is really great! I fully agree with what you wrote, and this is sure to help me out
-                    in
-                    the future. Thank you for posting this.</p>
+            <style>
+
+            </style>
+
+            <div class="comments pb-2" id="list_of_cinemas">
+                {% for comment in comments %}
+                <div class="single-comment p-2 mt-2">
+                    <p class="mb-0 pt-0 name">{{ comment.username }}</p>
+                    <p class="pt-0 mb-0">{{ comment.date_of_comment }}</p>
+                    <p>{{ comment.text }}</p>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 </div>
 
-{% endblock %}
+<script>
+
+</script>
+
+</body>
+</html>

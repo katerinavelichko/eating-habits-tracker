@@ -382,12 +382,11 @@ def search_images(query):
 
             else:
                 print("нет результатов")
-                return None
+                return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg?t=st=1716668301~exp=1716671901~hmac=f23047653ea627bf318e30c821336b2aa77d4cc2513a12c9c324a2bfd656177e&w=1800'
         else:
             print("Ошибка:", response.status_code)
-            return None
+            return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg?t=st=1716668301~exp=1716671901~hmac=f23047653ea627bf318e30c821336b2aa77d4cc2513a12c9c324a2bfd656177e&w=1800'
     except Exception as e:
         print("ошибка:", e)
-        return None
-
-
+        return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg?t=st=1716668301~exp=1716671901~hmac=f23047653ea627bf318e30c821336b2aa77d4cc2513a12c9c324a2bfd656177e&w=1800'
+    return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg?t=st=1716668301~exp=1716671901~hmac=f23047653ea627bf318e30c821336b2aa77d4cc2513a12c9c324a2bfd656177e&w=1800'

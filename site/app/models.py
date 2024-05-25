@@ -114,8 +114,24 @@ class Posts(db.Model):
     @classmethod
     def add_post(cls, text, title, description, tags, user_id):
         today = date.today()
-        photo = search_images(tags[0])
-        tags = str(tags)
+        photo = search_images(tags.split(', ')[0])
+        print(search_images(tags.split(', ')[0]))
         post = cls(user_id=user_id, text=text, title=title, description=description, tags=tags, date_of_post=today, photo=photo)
         db.session.add(post)
+        db.session.commit()
+
+class Comment(db.Model):
+    __tablename__ = 'comment'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    text = db.Column(db.Text)
+    date_of_comment = db.Column(db.Date)
+
+    @classmethod
+    def add_comment(cls, text, post_id, user_id):
+        today = date.today()
+        comment = cls(user_id=user_id, text=text, post_id=post_id, date_of_comment=today)
+        db.session.add(comment)
         db.session.commit()
