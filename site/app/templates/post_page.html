@@ -13,8 +13,8 @@
 <div class="blog-containerr">
     <div class="card-cus pb-4">
         <div class="thumbnail">
-            <img class="left"
-                 src="https://cdn2.hubspot.net/hubfs/322787/Mychefcom/images/BLOG/Header-Blog/photo-culinaire-pexels.jpg"/>
+            <img class="left" src="{{ post.photo }}"/>
+
             <div class="d-lg-block d-none">
                 <h3>{{ post.date_of_post }}</h3>
             </div>
@@ -40,10 +40,12 @@
             <div class="separator"></div>
             <p>{{ post.text }}</p>
             <div class="separator"></div>
-            <div class="d-flex col-12 justify-content-between">
-                <textarea type="text" class="col-9" placeholder="Write a comment"></textarea>
-                <button class='cust-btn col-3' type="submit">Add Comment</button>
-            </div>
+            <form class="comment-form">
+                <div class="d-flex col-12 justify-content-between">
+                    <textarea type="text" class="col-9" placeholder="Write a comment"></textarea>
+                    <button class='cust-btn col-3' type="submit">Add Comment</button>
+                </div>
+            </form>
 
             <style>
 
@@ -63,6 +65,47 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var addCommentForm = document.querySelector('.comment-form');
+        addCommentForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+            // Получаем текст комментария из поля ввода
+            var commentText = addCommentForm.querySelector('textarea').value;
+
+            // Создаем объект FormData для отправки данных формы на сервер
+            var formData = new FormData();
+            formData.append('text', commentText);
+
+            // Отправляем запрос на сервер с помощью AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/add_comment/{{ post.id }}', true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Если запрос успешен, создаем HTML для нового комментария
+                    var response = JSON.parse(xhr.responseText);
+                    var newComment = document.createElement('div');
+                    newComment.classList.add('single-comment', 'p-2', 'mt-2');
+                    newComment.innerHTML = `
+                    <p class="mb-0 pt-0 name">${response.username}</p>
+                    <p class="pt-0 mb-0">${response.date_of_comment}</p>
+                    <p>${response.text}</p>
+                `;
+                    // Добавляем новый комментарий на страницу
+                    document.getElementById('list_of_cinemas').appendChild(newComment);
+
+                    // Очищаем поле ввода
+                    addCommentForm.querySelector('textarea').value = '';
+                } else {
+                    // В случае ошибки выводим сообщение об ошибке
+                    console.error('Ошибка при отправке комментария');
+                    addCommentForm.querySelector('textarea').value = '';
+
+                }
+            };
+            xhr.send(formData);
+        });
+    });
 
 </script>
 

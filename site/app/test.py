@@ -382,11 +382,28 @@ def search_images(query):
 
             else:
                 print("нет результатов")
-                return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg?t=st=1716668301~exp=1716671901~hmac=f23047653ea627bf318e30c821336b2aa77d4cc2513a12c9c324a2bfd656177e&w=1800'
+                return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
         else:
             print("Ошибка:", response.status_code)
-            return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg?t=st=1716668301~exp=1716671901~hmac=f23047653ea627bf318e30c821336b2aa77d4cc2513a12c9c324a2bfd656177e&w=1800'
+            return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
     except Exception as e:
         print("ошибка:", e)
-        return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg?t=st=1716668301~exp=1716671901~hmac=f23047653ea627bf318e30c821336b2aa77d4cc2513a12c9c324a2bfd656177e&w=1800'
-    return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg?t=st=1716668301~exp=1716671901~hmac=f23047653ea627bf318e30c821336b2aa77d4cc2513a12c9c324a2bfd656177e&w=1800'
+        return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
+    return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
+
+
+def search_images_un(query):
+    ACCESS_KEY = config["unsplash"]["api"]
+    url = f'https://api.unsplash.com/photos/random/?client_id={ACCESS_KEY}&query={query}'
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            return data['urls']['regular']
+        else:
+            print("Ошибка при выполнении запроса:", response.status_code)
+            return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
+    except Exception as e:
+        print("Ошибка:", e)
+        return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
