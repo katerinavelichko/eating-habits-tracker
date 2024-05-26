@@ -382,12 +382,28 @@ def search_images(query):
 
             else:
                 print("нет результатов")
-                return None
+                return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
         else:
             print("Ошибка:", response.status_code)
-            return None
+            return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
     except Exception as e:
         print("ошибка:", e)
-        return None
+        return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
+    return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
 
 
+def search_images_un(query):
+    ACCESS_KEY = config["unsplash"]["api"]
+    url = f'https://api.unsplash.com/photos/random/?client_id={ACCESS_KEY}&query={query}'
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            return data['urls']['regular']
+        else:
+            print("Ошибка при выполнении запроса:", response.status_code)
+            return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'
+    except Exception as e:
+        print("Ошибка:", e)
+        return 'https://img.freepik.com/free-photo/overhead-view-green-healthy-fresh-vegetables-white-wooden-desk_23-2148062440.jpg'

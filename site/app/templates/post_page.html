@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}блог страница {% endblock %}</title>
+</head>
+<body>
+<p class="read-more">
+    <a href="{{ url_for('blog') }}">Вернуться к блогу</a>
+</p>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'>
+<link rel="stylesheet" type="text/css" href="../static/css/blog_page.css">
+<div class="blog-containerr">
+    <div class="card-cus pb-4">
+        <div class="thumbnail">
+            <img class="left" src="{{ post.photo }}"/>
+
+            <div class="d-lg-block d-none">
+                <h3>{{ post.date_of_post }}</h3>
+            </div>
+        </div>
+        <div class="right">
+            <h1>{{ post.title }}</h1>
+            <div class='d-flex'>
+                <div class="author me-1">
+                    <h2><i class="fa-solid fa-circle-user me-2"></i>{{ name }}</h2>
+                </div>
+                {% for tag in tags %}
+                <div class="cat">
+                    <h2>{{ tag }}</h2>
+                </div>
+                {% endfor %}
+                <div class="date ms-1 d-lg-none d-md-inline d-none">
+                    <h2><i class="fa-solid fa-calendar me-2"></i>12 Jan, 2020</h2>
+                </div>
+                <div class="date ms-1 d-md-none d-inline">
+                    <h2><i class="fa-solid fa-calendar me-2"></i>12 Jan</h2>
+                </div>
+            </div>
+            <div class="separator"></div>
+            <p>{{ post.text }}</p>
+            <div class="separator"></div>
+            <form class="comment-form">
+                <div class="d-flex col-12 justify-content-between">
+                    <textarea type="text" class="col-9" placeholder="Write a comment"></textarea>
+                    <button class='cust-btn col-3' type="submit">Add Comment</button>
+                </div>
+            </form>
+
+            <style>
+
+            </style>
+
+            <div class="comments pb-2" id="list_of_cinemas">
+                {% for comment in comments %}
+                <div class="single-comment p-2 mt-2">
+                    <p class="mb-0 pt-0 name">{{ comment.username }}</p>
+                    <p class="pt-0 mb-0">{{ comment.date_of_comment }}</p>
+                    <p>{{ comment.text }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var addCommentForm = document.querySelector('.comment-form');
+        addCommentForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+            // Получаем текст комментария из поля ввода
+            var commentText = addCommentForm.querySelector('textarea').value;
+
+            // Создаем объект FormData для отправки данных формы на сервер
+            var formData = new FormData();
+            formData.append('text', commentText);
+
+            // Отправляем запрос на сервер с помощью AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/add_comment/{{ post.id }}', true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Если запрос успешен, создаем HTML для нового комментария
+                    var response = JSON.parse(xhr.responseText);
+                    var newComment = document.createElement('div');
+                    newComment.classList.add('single-comment', 'p-2', 'mt-2');
+                    newComment.innerHTML = `
+                    <p class="mb-0 pt-0 name">${response.username}</p>
+                    <p class="pt-0 mb-0">${response.date_of_comment}</p>
+                    <p>${response.text}</p>
+                `;
+                    // Добавляем новый комментарий на страницу
+                    document.getElementById('list_of_cinemas').appendChild(newComment);
+
+                    // Очищаем поле ввода
+                    addCommentForm.querySelector('textarea').value = '';
+                } else {
+                    // В случае ошибки выводим сообщение об ошибке
+                    console.error('Ошибка при отправке комментария');
+                    addCommentForm.querySelector('textarea').value = '';
+
+                }
+            };
+            xhr.send(formData);
+        });
+    });
+
+</script>
+
+</body>
+</html>
