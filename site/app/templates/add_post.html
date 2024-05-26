@@ -2,99 +2,100 @@
 
 {% block title %}Страница about{% endblock %}
 {% block content %}
-    <title>Моя формочка</title>
-    <!-- dependencies (jquery, handlebars and bootstrap) -->
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript"
-            src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-    <link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
-    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<title>Моя формочка</title>
+<link rel="stylesheet" type="text/css" href="../static/css/profile.css">
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+<link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-    <!-- alpaca -->
-    <link type="text/css" href="//cdn.jsdelivr.net/npm/alpaca@1.5.27/dist/alpaca/bootstrap/alpaca.min.css"
-          rel="stylesheet"/>
-    <script type="text/javascript"
-            src="//cdn.jsdelivr.net/npm/alpaca@1.5.27/dist/alpaca/bootstrap/alpaca.min.js"></script>
+<!-- alpaca -->
+<link type="text/css" href="//cdn.jsdelivr.net/npm/alpaca@1.5.27/dist/alpaca/bootstrap/alpaca.min.css"
+      rel="stylesheet"/>
+<script type="text/javascript"
+        src="//cdn.jsdelivr.net/npm/alpaca@1.5.27/dist/alpaca/bootstrap/alpaca.min.js"></script>
+<div class=" justify-content-center">
 
+    <div id="form1"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#form1").alpaca({
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "abstract": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "blog": {
+                            "type": "textarea",
+                            "rows": 6,
+                            "cols": 80,
+                            "required": true
+                        },
+                        "tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "tag": {
+                                        "title": "Тег:",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "options": {
+                    "fields": {
+                        "name": {
+                            "type": "text",
+                            "label": "Напишите заголовок статьи"
+                        },
+                        "abstract": {
+                            "type": "text",
+                            "label": "Напишите аннотацию"
+                        },
+                        "blog": {
+                            "type": "textarea",
+                            "label": "Напишите тело статьи",
+                        },
+                        "tags": {
+                            "type": "array",
+                            "label": "Введите теги, которые описывают вашу статью"
+                        }
 
-<div id="form1"></div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#form1").alpaca({
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "required": true
                     },
-                    "abstract": {
-                        "type": "string",
-                        "required": true
-                    },
-                    "blog": {
-                        "type": "textarea",
-                        "rows": 6,
-                        "cols": 80,
-                        "required": true
-                    },
-                    "tags" : {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "tag": {
-                                    "title": "Тег:",
-                                    "type": "string"
+                    "form": {
+                        "attributes": {
+                            "action": "http://httpbin.org/post",
+                            "method": "post"
+                        },
+                        "buttons": {
+                            "submit": {
+                                "title": "Send Form Data",
+                                "click": function () {
+                                    var val = this.getValue();
+                                    // Создание и отправка AJAX запроса
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open('POST', '/receive_post', true);
+                                    xhr.setRequestHeader('Content-Type', 'application/json');
+                                    xhr.send(JSON.stringify(val));
+                                    window.location.href = '/'
                                 }
                             }
                         }
                     }
                 }
-            },
-            "options": {
-                "fields": {
-                    "name": {
-                        "type": "text",
-                        "label": "Напишите заголовок статьи"
-                    },
-                    "abstract": {
-                        "type": "text",
-                        "label": "Напишите аннотацию"
-                    },
-                    "blog": {
-                        "type": "textarea",
-                        "label": "Напишите тело статьи",
-                    },
-                    "tags": {
-                        "type": "array",
-                        "label": "Введите теги, которые описывают вашу статью"
-                    }
-
-                },
-                 "form": {
-                     "attributes": {
-                         "action": "http://httpbin.org/post",
-                         "method": "post"
-                     },
-                     "buttons": {
-                         "submit": {
-                             "title": "Send Form Data",
-                             "click": function () {
-                                 var val = this.getValue();
-                                 // Создание и отправка AJAX запроса
-                                 var xhr = new XMLHttpRequest();
-                                 xhr.open('POST', '/receive_post', true);
-                                 xhr.setRequestHeader('Content-Type', 'application/json');
-                                 xhr.send(JSON.stringify(val));
-                                 window.location.href = '/'
-                             }
-                         }
-                     }
-                 }
-            }
+            });
         });
-    });
 
-</script>
+    </script>
+</div>
 {% endblock %}

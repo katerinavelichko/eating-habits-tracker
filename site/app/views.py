@@ -16,7 +16,7 @@ from yandexgptlite import YandexGPTLite
 
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
-from .models import Users, QuestionsSleep, Diary, Posts
+from .models import Users, QuestionsSleep, Diary, Posts, Comment
 from .test import make_df_for_model, translator
 
 from joblib import load
@@ -309,21 +309,6 @@ def blog():
     return render_template("blog.html", **context)
 
 
-# @app.route("/post/<int:post_id>", methods=["GET", "POST"])
-# def post_pge(post_id):
-#     post = Posts.query.filter_by(id=post_id).first()
-#     user = Users.query.filter_by(id=post.user_id).first()
-#     tags = post.tags
-#     tags = tags.split(', ')
-#     context = {'post': post,
-#                'name': user.name,
-#                'tags': tags}
-#
-#     return render_template("post_page.html", **context)
-
-from .models import Comment  # Подставьте сюда вашу модель комментария и объект базы данных
-
-
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def post_page(post_id):
     post = Posts.query.filter_by(id=post_id).first()
@@ -331,9 +316,14 @@ def post_page(post_id):
     tags = post.tags
     tags = tags.split(', ')
 
-
-
-    comments = Comment.query.filter_by(post_id=post_id).all()
+    comments_bd = Comment.query.filter_by(post_id=post_id).order_by(Comment.date_of_comment.asc()).all()
+    comments = []
+    for comment in comments_bd:
+        user_comment = Users.query.filter_by(id=comment.user_id).first()
+        username = user_comment.name
+        comments.append({'username': username,
+                         'date_of_comment': comment.date_of_comment,
+                         'text': comment.text})
     context = {'post': post,
                'name': user.name,
                'tags': tags,
@@ -341,23 +331,20 @@ def post_page(post_id):
 
     return render_template("post_page.html", **context)
 
-# @app.route('/adding_comment', methods=['POST'])
-# def adding_comment():
-#     comment_text = request.form['comment_text']
-#     user_id = current_user.get_id()
-#     Comment.add_comment(comment_text, 1, user_id)
-#     obj = Comment.add_comment(
-#         request.form['cinema_name'],
-#         request.form['cinema_address'],
-#         request.form['cinema_district']
-#     )
-#     data = {
-#         'status': 'success',
-#         'obj': obj,
-#         'id': obj[0]['id']
-#     }
-#     return data
 
+@app.route("/add_comment/<int:post_id>", methods=["POST", "GET"])
+def add_comment(post_id):
+    text = request.form['text']
+
+    Comment.add_comment(text, post_id, current_user.get_id())
+    new_comment = Comment.query.filter_by(text=text, post_id=post_id, user_id=current_user.get_id()).first()
+    user = Users.query.filter_by(id=new_comment.user_id).first()
+    username = user.name
+    return jsonify({
+        'username': username,
+        'date_of_comment': new_comment.date_of_comment.strftime('%Y-%m-%d'),
+        'text': new_comment.text
+    })
 
 
 if __name__ == "__main__":
