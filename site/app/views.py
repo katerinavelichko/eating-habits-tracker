@@ -170,7 +170,7 @@ def create_user():
     return render_template("form_users.html", form=form, **context)
 
 
-@app.route("/`receive_post", methods=["POST", "GET"])
+@app.route("/receive_post", methods=["POST", "GET"])
 @login_required
 def receive_post_from_forms():
     data = request.get_json()
