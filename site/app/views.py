@@ -81,8 +81,13 @@ def tracker_form():
 @app.route("/blog_post")
 @login_required
 def blog_post():
-    return render_template("add_post.html")
-
+    user_id = current_user.get_id()
+    user = Users.query.get(user_id)
+    user_rights = user.rights
+    if user_rights:
+        return render_template("add_post.html")
+    else:
+        return "Упс...(((  Похоже, у вас нет прав для создания поста"
 
 @app.route("/questions")
 @login_required
