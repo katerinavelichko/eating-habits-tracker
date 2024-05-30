@@ -118,7 +118,6 @@ class Posts(db.Model):
     def add_post(cls, text, title, description, tags, user_id):
         today = date.today()
         photo = search_images_un(tags.split(', ')[0])
-        print(search_images(tags.split(', ')[0]))
         post = cls(user_id=user_id, text=text, title=title, description=description, tags=tags, date_of_post=today,
                    photo=photo)
         db.session.add(post)
