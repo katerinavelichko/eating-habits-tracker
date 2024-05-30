@@ -13,6 +13,8 @@ class Users(db.Model):
     email = db.Column(db.String(120))
     password = db.Column(db.String(120))
     date_of_registration = db.Column(db.Date)
+    rights = db.Column(db.Integer)   # stupid way: 0 - reader rights, 1 - creator rights
+                                     # controlling it by arms
 
     @classmethod
     def add_user(cls, name, email, password):
