@@ -16,7 +16,7 @@ from yandexgptlite import YandexGPTLite
 
 from .UserLogin import UserLogin
 from .forms import CreateUserForm
-from .models import Users, QuestionsSleep, Diary, Posts
+from .models import Users, QuestionsSleep, Diary, Posts, Comment
 from .test import make_df_for_model, translator
 
 from joblib import load
@@ -81,8 +81,13 @@ def tracker_form():
 @app.route("/blog_post")
 @login_required
 def blog_post():
-    return render_template("add_post.html")
-
+    user_id = current_user.get_id()
+    user = Users.query.get(user_id)
+    user_rights = user.rights
+    if user_rights:
+        return render_template("add_post.html")
+    else:
+        return "Упс...(((  Похоже, у вас нет прав для создания поста"
 
 @app.route("/questions")
 @login_required
@@ -170,7 +175,7 @@ def create_user():
     return render_template("form_users.html", form=form, **context)
 
 
-@app.route("/`receive_post", methods=["POST", "GET"])
+@app.route("/receive_post", methods=["POST", "GET"])
 @login_required
 def receive_post_from_forms():
     data = request.get_json()
@@ -181,8 +186,10 @@ def receive_post_from_forms():
     text = data['blog']
     abstract = data['abstract']
     tags = data['tags']
+    tags_mas = [x['tag'] for x in tags]
+    tags_string = ', '.join(tags_mas)
 
-    form.add_post(text, title, abstract, tags, user_id)
+    form.add_post(text, title, abstract, tags_string, user_id)
     return data
 
 
@@ -301,9 +308,48 @@ def blog():
         user = Users.query.filter_by(id=post.user_id).first()
         post_dict['name'] = user.name
         post_dict['photo'] = post.photo
+        post_dict['id'] = post.id
         context['posts'].append(post_dict)
 
     return render_template("blog.html", **context)
+
+
+@app.route("/post/<int:post_id>", methods=["GET", "POST"])
+def post_page(post_id):
+    post = Posts.query.filter_by(id=post_id).first()
+    user = Users.query.filter_by(id=post.user_id).first()
+    tags = post.tags
+    tags = tags.split(', ')
+
+    comments_bd = Comment.query.filter_by(post_id=post_id).order_by(Comment.date_of_comment.asc()).all()
+    comments = []
+    for comment in comments_bd:
+        user_comment = Users.query.filter_by(id=comment.user_id).first()
+        username = user_comment.name
+        comments.append({'username': username,
+                         'date_of_comment': comment.date_of_comment,
+                         'text': comment.text})
+    context = {'post': post,
+               'name': user.name,
+               'tags': tags,
+               'comments': comments}
+
+    return render_template("post_page.html", **context)
+
+
+@app.route("/add_comment/<int:post_id>", methods=["POST", "GET"])
+def add_comment(post_id):
+    text = request.form['text']
+
+    Comment.add_comment(text, post_id, current_user.get_id())
+    new_comment = Comment.query.filter_by(text=text, post_id=post_id, user_id=current_user.get_id()).first()
+    user = Users.query.filter_by(id=new_comment.user_id).first()
+    username = user.name
+    return jsonify({
+        'username': username,
+        'date_of_comment': new_comment.date_of_comment.strftime('%Y-%m-%d'),
+        'text': new_comment.text
+    })
 
 
 if __name__ == "__main__":

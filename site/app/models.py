@@ -2,6 +2,7 @@ from . import db
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import date
+from .test import search_images, search_images_un
 
 
 class Users(db.Model):
@@ -12,6 +13,8 @@ class Users(db.Model):
     email = db.Column(db.String(120))
     password = db.Column(db.String(120))
     date_of_registration = db.Column(db.Date)
+    rights = db.Column(db.Integer)   # stupid way: 0 - reader rights, 1 - creator rights
+                                     # controlling it by arms
 
     @classmethod
     def add_user(cls, name, email, password):
@@ -109,10 +112,31 @@ class Posts(db.Model):
     description = db.Column(db.String(500))
     tags = db.Column(db.String(500))
     date_of_post = db.Column(db.Date)
+    photo = db.Column(db.String(500))
 
     @classmethod
     def add_post(cls, text, title, description, tags, user_id):
         today = date.today()
-        post = cls(user_id=user_id, text=text, title=title, description=description, tags=tags, date=today)
+        photo = search_images_un(tags.split(', ')[0])
+        print(search_images(tags.split(', ')[0]))
+        post = cls(user_id=user_id, text=text, title=title, description=description, tags=tags, date_of_post=today,
+                   photo=photo)
         db.session.add(post)
+        db.session.commit()
+
+
+class Comment(db.Model):
+    __tablename__ = 'comment'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    text = db.Column(db.Text)
+    date_of_comment = db.Column(db.Date)
+
+    @classmethod
+    def add_comment(cls, text, post_id, user_id):
+        today = date.today()
+        comment = cls(user_id=user_id, text=text, post_id=post_id, date_of_comment=today)
+        db.session.add(comment)
         db.session.commit()
