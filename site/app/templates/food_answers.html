@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}tracker{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="../static/css/sleep_ans.css">
+<div id="container">
+<header>
+	<h1> Советы по питанию</h1>
+		<p> На основании ваших ответов о пищевых привычках рекомендуем ознакомиться с некоторыми советами, которые помогут скорректировать ваше питание</p>
+</header>
+
+<main>
+	{{ text }}
+</main>
+</div>
+
+{% endblock %}
