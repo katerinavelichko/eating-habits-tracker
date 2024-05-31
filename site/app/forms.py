@@ -10,8 +10,3 @@ class CreateUserForm(FlaskForm):
         "Password", validators=[Length(min=8, message="Short password! min - 8")]
     )
     submit = SubmitField("Отправить")
-
-
-
-
-
