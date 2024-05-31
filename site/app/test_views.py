@@ -37,7 +37,9 @@ def login(name, email, password, date_of_registration, client):
     )
     db.session.add(new_user)
     db.session.commit()
-    response = client.post("/login", data={"email": email, "password": password})
+    response = client.post(
+        "/login", data={"email": email, "password": password}
+    )
 
 
 def logout(email):
@@ -64,7 +66,10 @@ def test_soon(client):
 def test_login_nonexistent_user(client):
     response = client.post(
         "/login",
-        data={"email": "nonexistent_user@example.com", "password": "nonexistent"},
+        data={
+            "email": "nonexistent_user@example.com",
+            "password": "nonexistent",
+        },
     )
     assert response.status_code == 200
     assert "Неверный email или пароль".encode("utf-8") in response.data
@@ -83,7 +88,9 @@ def test_login_real_user(client):
     db.session.add(new_user)
     db.session.commit()
 
-    response = client.post("/login", data={"email": email, "password": password})
+    response = client.post(
+        "/login", data={"email": email, "password": password}
+    )
 
     # проверяем, что страница перенаправляет пользователя
     assert response.status_code == 302
@@ -125,7 +132,10 @@ def test_create_user_valid_data(client):
         },
     )
     assert response.status_code == 302
-    assert Users.query.filter_by(email="valid_email@example.com").first() is not None
+    assert (
+        Users.query.filter_by(email="valid_email@example.com").first()
+        is not None
+    )
 
     logout("valid_email@example.com")
 
@@ -133,7 +143,10 @@ def test_create_user_valid_data(client):
 # регистрация с невалидными данными
 @pytest.mark.parametrize(
     "email, password",
-    [("invalid_email", "valid_password"), ("validemail@example.com", "invalid")],
+    [
+        ("invalid_email", "valid_password"),
+        ("validemail@example.com", "invalid"),
+    ],
 )
 def test_create_user_invalid_data(client, email, password):
     response = client.get("/signup")

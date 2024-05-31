@@ -1,0 +1,11 @@
+[tool.black]
+line-length = 79
+exclude = '''
+    venv/
+    migrations/
+    .idea/
+    catboost_model.cbm/
+    docker-compose.yml/
+    Dockerfile/
+    runner.py/
+'''

@@ -242,10 +242,26 @@ def answers(file, prompt_key_good, prompt_key_bad):
     ).tolist()[0]
     keys = make_df_for_model(current_user, QuestionsSleep)[1]
     if int(number) == 1:
-        prompt = all_prompts[prompt_key_good] + keys[0] + "," + keys[1] + "," + keys[2]
+        prompt = (
+            all_prompts[prompt_key_good]
+            + keys[0]
+            + ","
+            + keys[1]
+            + ","
+            + keys[2]
+        )
     else:
-        prompt = all_prompts[prompt_key_bad] + keys[0] + "," + keys[1] + "," + keys[2]
-    account = YandexGPTLite(config["yandexgpt"]["key1"], config["yandexgpt"]["key2"])
+        prompt = (
+            all_prompts[prompt_key_bad]
+            + keys[0]
+            + ","
+            + keys[1]
+            + ","
+            + keys[2]
+        )
+    account = YandexGPTLite(
+        config["yandexgpt"]["key1"], config["yandexgpt"]["key2"]
+    )
     text = account.create_completion(prompt, "0.6")
     text1 = "1. " + " ".join(text.split("**")[1:])
     context = {"text": text1}
@@ -391,7 +407,12 @@ def post_page(post_id):
                 "text": comment.text,
             }
         )
-    context = {"post": post, "name": user.name, "tags": tags, "comments": comments}
+    context = {
+        "post": post,
+        "name": user.name,
+        "tags": tags,
+        "comments": comments,
+    }
 
     return render_template("post_page.html", **context)
 
@@ -409,7 +430,9 @@ def add_comment(post_id):
     return jsonify(
         {
             "username": username,
-            "date_of_comment": new_comment.date_of_comment.strftime("%Y-%m-%d"),
+            "date_of_comment": new_comment.date_of_comment.strftime(
+                "%Y-%m-%d"
+            ),
             "text": new_comment.text,
         }
     )
