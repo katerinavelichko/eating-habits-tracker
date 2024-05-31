@@ -1,5 +1,5 @@
 import json
-
+import bcrypt
 from flask import (
     render_template,
     request,
@@ -42,8 +42,6 @@ all_prompts = {
                   исправить 3 критерия:"
 }
 
-
-
 current_directory = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_directory, 'rf_model.joblib')
 
@@ -70,13 +68,14 @@ def index():
 def soon():
     return "Скоро тут что-то будет"
 
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        password = request.form["password"]
         email = request.form["email"]
-        user = Users.query.filter_by(email=email, password=password).first()  # ищем человека
-        if user:
+        password = request.form["password"]
+        user = Users.query.filter_by(email=email).first()
+        if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             user = UserLogin().create(user)
             login_user(user, remember=True)
             return redirect("/")
@@ -104,6 +103,7 @@ def blog_post():
         return render_template("add_post.html")
     else:
         return "Упс.(((  Похоже, у вас нет прав для создания поста"
+
 
 @app.route("/questions")
 @login_required
@@ -251,20 +251,24 @@ def answers(file, prompt_key_good, prompt_key_bad):
     }
     return render_template(file, **context)
 
+
 @app.route("/activity", methods=["POST", "GET"])
 @login_required
 def activity():
     return answers("activity_answers.html", "activity_good", "activity_bad")
+
 
 @app.route("/food", methods=["POST", "GET"])
 @login_required
 def food():
     return answers("food_answers.html", "food_good", "food_bad")
 
+
 @app.route("/profile/answers", methods=["GET", "POST"])
 @login_required
 def sleep():
     return answers("sleep_answers.html", "sleep_good", "sleep_bad")
+
 
 @app.route("/profile/tracker")
 def tracker():
