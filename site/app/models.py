@@ -14,7 +14,9 @@ class Users(db.Model):
     email = db.Column(db.String(120))
     password = db.Column(db.String(120))
     date_of_registration = db.Column(db.Date)
-    rights = db.Column(db.Integer)  # stupid way: 0 - reader rights, 1 - creator rights
+    rights = db.Column(
+        db.Integer
+    )  # stupid way: 0 - reader rights, 1 - creator rights
 
     # controlling it by arms
 
@@ -32,7 +34,9 @@ class Users(db.Model):
 
     @classmethod
     def add_user(cls, name, email, password):
-        hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+        hashed_password = bcrypt.hashpw(
+            password.encode("utf-8"), bcrypt.gensalt()
+        )
         user = cls(
             name=name,
             email=email,

@@ -52,7 +52,9 @@ def mock_questions_sleep():
     return questions_sleep
 
 
-def login(name, email, password, date_of_registration, client, mock_questions_sleep):
+def login(
+    name, email, password, date_of_registration, client, mock_questions_sleep
+):
     hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     new_user = Users(
         name=name,
@@ -67,7 +69,9 @@ def login(name, email, password, date_of_registration, client, mock_questions_sl
     questions.user_id = user.id
     db.session.add(questions)
     db.session.commit()
-    response = client.post("/login", data={"email": email, "password": password})
+    response = client.post(
+        "/login", data={"email": email, "password": password}
+    )
 
 
 def logout(email):
@@ -103,7 +107,9 @@ def test_make_df_for_model_returns_list(mock_questions_sleep, client):
     logout(LOGIN_EMAIL)
 
 
-def test_make_df_for_model_first_element_is_dataframe(mock_questions_sleep, client):
+def test_make_df_for_model_first_element_is_dataframe(
+    mock_questions_sleep, client
+):
     login(
         LOGIN_NAME,
         LOGIN_EMAIL,
@@ -120,7 +126,9 @@ def test_make_df_for_model_first_element_is_dataframe(mock_questions_sleep, clie
     logout(LOGIN_EMAIL)
 
 
-def test_make_df_for_model_second_element_is_list(mock_questions_sleep, client):
+def test_make_df_for_model_second_element_is_list(
+    mock_questions_sleep, client
+):
     login(
         LOGIN_NAME,
         LOGIN_EMAIL,
@@ -137,7 +145,9 @@ def test_make_df_for_model_second_element_is_list(mock_questions_sleep, client):
     logout(LOGIN_EMAIL)
 
 
-def test_make_df_for_model_dataframe_has_correct_columns(mock_questions_sleep, client):
+def test_make_df_for_model_dataframe_has_correct_columns(
+    mock_questions_sleep, client
+):
     login(
         LOGIN_NAME,
         LOGIN_EMAIL,
