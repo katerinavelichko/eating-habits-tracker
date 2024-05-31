@@ -176,7 +176,9 @@ def make_df_for_model(current_user, QuestionsSleep):
             answer_dict[new_key_restaurants] = (
                 1 if value == "Yes, I eat at restaurants" else 0
             )
-            answer_dict[new_key_home] = 1 if value == "Yes, I eat more at home" else 0
+            answer_dict[new_key_home] = (
+                1 if value == "Yes, I eat more at home" else 0
+            )
 
         elif key == "alcoholic_beverages":
             new_key_alcohol = res[key]
@@ -191,7 +193,9 @@ def make_df_for_model(current_user, QuestionsSleep):
             new_key_lunch = res[key] + "_Yes, lunch"
 
             answer_dict[new_key_no] = 1 if value == "No" else 0
-            answer_dict[new_key_breakfast] = 1 if value == "Yes, breakfast" else 0
+            answer_dict[new_key_breakfast] = (
+                1 if value == "Yes, breakfast" else 0
+            )
             answer_dict[new_key_yes] = 1 if value == "Yes" else 0
             answer_dict[new_key_dinner] = 1 if value == "Yes, dinner" else 0
             answer_dict[new_key_lunch] = 1 if value == "Yes, lunch" else 0
@@ -203,7 +207,9 @@ def make_df_for_model(current_user, QuestionsSleep):
             new_key_often = res[key] + "_Often (>1/week)"
 
             answer_dict[new_key_everyday] = 1 if value == "Every day" else 0
-            answer_dict[new_key_infreq] = 1 if value == "Infrequent (1/month)" else 0
+            answer_dict[new_key_infreq] = (
+                1 if value == "Infrequent (1/month)" else 0
+            )
             answer_dict[new_key_never] = 1 if value == "Never" else 0
             answer_dict[new_key_often] = 1 if value == "Often (>1/week)" else 0
 
@@ -227,7 +233,9 @@ def make_df_for_model(current_user, QuestionsSleep):
             new_key_lunch = res[key] + "_Yes, lunch"
 
             answer_dict[new_key_everyday] = 1 if value == "Every day" else 0
-            answer_dict[new_key_breakfast] = 1 if value == "Yes, breakfast" else 0
+            answer_dict[new_key_breakfast] = (
+                1 if value == "Yes, breakfast" else 0
+            )
             answer_dict[new_key_yes] = 1 if value == "Yes" else 0
             answer_dict[new_key_dinner] = 1 if value == "Yes, dinner" else 0
             answer_dict[new_key_lunch] = 1 if value == "Yes, lunch" else 0
@@ -364,13 +372,19 @@ def make_df_for_model(current_user, QuestionsSleep):
             features.append("How_many_sugary_drinks_do_you_consume_per_day")
             tmp_dict["How_many_sugary_drinks_do_you_consume_per_day"] = 0
         elif (
-            int(tmp_dict["How_many_times_do_you_consume_alcoholic_beverages_in_a_week"])
+            int(
+                tmp_dict[
+                    "How_many_times_do_you_consume_alcoholic_beverages_in_a_week"
+                ]
+            )
             > 0
         ):
             features.append(
                 "How_many_times_do_you_consume_alcoholic_beverages_in_a_week"
             )
-            tmp_dict["How_many_times_do_you_consume_alcoholic_beverages_in_a_week"] = 0
+            tmp_dict[
+                "How_many_times_do_you_consume_alcoholic_beverages_in_a_week"
+            ] = 0
         elif int(tmp_dict[i]) == 1:
             features.append(i)
             tmp_dict[i] = 0
@@ -418,7 +432,9 @@ def translator(user_products: list):
 
 
 def search_images(query):
-    API_URL = "https://pixabay.com/api/?key={api_key}&q={query}&image_type=photo"
+    API_URL = (
+        "https://pixabay.com/api/?key={api_key}&q={query}&image_type=photo"
+    )
     api_key = config["pixabay"]["api"]
     try:
         url = API_URL.format(api_key=api_key, query=query)
@@ -443,9 +459,7 @@ def search_images(query):
 
 def search_images_un(query):
     ACCESS_KEY = config["unsplash"]["api"]
-    url = (
-        f"https://api.unsplash.com/photos/random/?client_id={ACCESS_KEY}&query={query}"
-    )
+    url = f"https://api.unsplash.com/photos/random/?client_id={ACCESS_KEY}&query={query}"
 
     try:
         response = requests.get(url)

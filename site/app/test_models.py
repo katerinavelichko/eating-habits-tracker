@@ -41,7 +41,9 @@ def new_diary_product():
 @pytest.fixture(scope="module")
 def new_user():
     user = Users(
-        name="Test User", email="test_user@example.com", password="test_password"
+        name="Test User",
+        email="test_user@example.com",
+        password="test_password",
     )
     Users.add_user(user.name, user.email, user.password)
     return user
@@ -92,7 +94,9 @@ def test_add_user(new_user):
 def test_add_question(user_info, new_question_data):
     question_cnt = QuestionsSleep.query.filter_by(user_id=user_info.id).count()
     QuestionsSleep.add_question(user_info.id, new_question_data)
-    final_question_cnt = QuestionsSleep.query.filter_by(user_id=user_info.id).count()
+    final_question_cnt = QuestionsSleep.query.filter_by(
+        user_id=user_info.id
+    ).count()
 
     assert final_question_cnt == question_cnt + 1
 
@@ -109,7 +113,9 @@ def test_add_diary_product(user_info, new_diary_product):
     assert final_prodct_cnt == product_cnt + 1
 
     prdct = (
-        Diary.query.filter_by(user_id=user_info.id).order_by(Diary.id.desc()).first()
+        Diary.query.filter_by(user_id=user_info.id)
+        .order_by(Diary.id.desc())
+        .first()
     )
 
     assert prdct.product_name == new_diary_product["product_name"]
@@ -143,7 +149,9 @@ def test_add_post(new_post):
 def test_add_comment(new_comment):
     comm_cnt = Comment.query.filter_by(post_id=new_comment["post_id"]).count()
     Comment.add_comment(**new_comment)
-    final_comm_cnt = Comment.query.filter_by(post_id=new_comment["post_id"]).count()
+    final_comm_cnt = Comment.query.filter_by(
+        post_id=new_comment["post_id"]
+    ).count()
 
     assert final_comm_cnt == comm_cnt + 1
 
