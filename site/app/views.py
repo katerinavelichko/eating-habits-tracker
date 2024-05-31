@@ -1,5 +1,5 @@
 import json
-
+import bcrypt
 from flask import (
     render_template,
     request,
@@ -27,6 +27,21 @@ import requests
 import configparser
 from datetime import date, timedelta
 
+all_prompts = {
+    "activity_good": "Напиши в стиле наставления мне, что у меня хороший уровень активности, но чтобы быть более бодрым\
+                      и активным, нужно исправить 3 критерия:",
+    "activity_bad": "Напиши в стиле наставления мне, что у меня плохой уровень активности, и чтобы его улучшить, нужно\
+                     исправить 3 критерия:",
+    "food_good": "Напиши в стиле наставления мне, что у меня хорошее питание, но чтобы его улучшить, нужно\
+                  исправить 3 критерия:",
+    "food_bad": "Напиши в стиле наставления мне, что у меня плохое питание, и чтобы его улучшить, нужно\
+                 исправить 3 критерия:",
+    "sleep_good": "Напиши в стиле наставления мне, что у меня хорошее качество сна, но чтобы его улучшить, нужно\
+                   исправить 3 критерия:",
+    "sleep_bad": "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно\
+                  исправить 3 критерия:"
+}
+
 current_directory = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_directory, 'rf_model.joblib')
 
@@ -52,9 +67,6 @@ def index():
 @app.route("/soon")
 def soon():
     return "Скоро тут что-то будет"
-
-
-import bcrypt
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -90,7 +102,7 @@ def blog_post():
     if user_rights:
         return render_template("add_post.html")
     else:
-        return "Упс...(((  Похоже, у вас нет прав для создания поста"
+        return "Упс.(((  Похоже, у вас нет прав для создания поста"
 
 
 @app.route("/questions")
@@ -222,16 +234,14 @@ def receive_callories_from_forms():
     return data
 
 
-@app.route("/profile/answers", methods=["GET", "POST"])
-@login_required
-def answers():
+def answers(file, prompt_key_good, prompt_key_bad):
     number = rf_model.predict(make_df_for_model(current_user, QuestionsSleep)[0]).tolist()[0]
     keys = make_df_for_model(current_user, QuestionsSleep)[1]
     if int(number) == 1:
-        prompt = "Напиши в стиле наставления мне, что у меня хорошее качество сна, но чтобы его улучшить, нужно исправить 3 критерия:" + \
+        prompt = all_prompts[prompt_key_good] + \
                  keys[0] + "," + keys[1] + "," + keys[2]
     else:
-        prompt = "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно исправить 3 критерия:" + \
+        prompt = all_prompts[prompt_key_bad] + \
                  keys[0] + "," + keys[1] + "," + keys[2]
     account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
     text = account.create_completion(prompt, '0.6')
@@ -239,7 +249,25 @@ def answers():
     context = {
         'text': text1
     }
-    return render_template("sleep_answers.html", **context)
+    return render_template(file, **context)
+
+
+@app.route("/activity", methods=["POST", "GET"])
+@login_required
+def activity():
+    return answers("activity_answers.html", "activity_good", "activity_bad")
+
+
+@app.route("/food", methods=["POST", "GET"])
+@login_required
+def food():
+    return answers("food_answers.html", "food_good", "food_bad")
+
+
+@app.route("/profile/answers", methods=["GET", "POST"])
+@login_required
+def sleep():
+    return answers("sleep_answers.html", "sleep_good", "sleep_bad")
 
 
 @app.route("/profile/tracker")
