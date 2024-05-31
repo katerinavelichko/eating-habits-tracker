@@ -3,6 +3,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import date
 from .test import search_images, search_images_un
+import bcrypt
 
 
 class Users(db.Model):
@@ -13,12 +14,26 @@ class Users(db.Model):
     email = db.Column(db.String(120))
     password = db.Column(db.String(120))
     date_of_registration = db.Column(db.Date)
-    rights = db.Column(db.Integer)   # stupid way: 0 - reader rights, 1 - creator rights
-                                     # controlling it by arms
+    rights = db.Column(db.Integer)  # stupid way: 0 - reader rights, 1 - creator rights
+
+    # controlling it by arms
+
+    # def __init__(self, name, email, password):
+    #     self.name = name
+    #     self.email = email
+    #     self.set_password(password)
+    #     self.date_of_registration = date.today()
+    #
+    # def set_password(self, password):
+    #     self.password_hash = generate_password_hash(password)
+    #
+    # def check_password(self, password):
+    #     return check_password_hash(self.password_hash, passwo
 
     @classmethod
     def add_user(cls, name, email, password):
-        user = cls(name=name, email=email, password=password, date_of_registration=date.today())
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        user = cls(name=name, email=email, password=hashed_password.decode('utf-8'), date_of_registration=date.today())
         db.session.add(user)
         db.session.commit()
         print(f'Добавлен новый пользователь: {name}')
