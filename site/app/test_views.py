@@ -1,3 +1,4 @@
+import bcrypt
 from app import app, db
 from .views import load_user
 from .UserLogin import UserLogin
@@ -27,7 +28,8 @@ def client():
 
 
 def login(name, email, password, date_of_registration, client):
-    new_user = Users(name=name, email=email, password=password, date_of_registration=date_of_registration)
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    new_user = Users(name=name, email=email, password=hashed_password.decode('utf-8'), date_of_registration=date_of_registration)
     db.session.add(new_user)
     db.session.commit()
     response = client.post('/login', data={'email': email, 'password': password})
@@ -67,7 +69,9 @@ def test_login_real_user(client):
     password = 'validpassword'
 
     # добавляем пользователя в бд
-    new_user = Users(email=email, password=password)
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+    new_user = Users(email=email, password=hashed_password.decode('utf-8'))
     db.session.add(new_user)
     db.session.commit()
 
@@ -250,5 +254,3 @@ def test_profile(client):
         db.session.delete(diary)
         db.session.commit()
     logout(LOGIN_EMAIL)
-
-#   72? , 90-134??, 158??, 196-210, 215-251,  265-266

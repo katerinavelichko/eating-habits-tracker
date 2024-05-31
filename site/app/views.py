@@ -54,13 +54,16 @@ def soon():
     return "Скоро тут что-то будет"
 
 
+import bcrypt
+
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        password = request.form["password"]
         email = request.form["email"]
-        user = Users.query.filter_by(email=email, password=password).first()  # ищем человека
-        if user:
+        password = request.form["password"]
+        user = Users.query.filter_by(email=email).first()
+        if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             user = UserLogin().create(user)
             login_user(user, remember=True)
             return redirect("/")
@@ -88,6 +91,7 @@ def blog_post():
         return render_template("add_post.html")
     else:
         return "Упс...(((  Похоже, у вас нет прав для создания поста"
+
 
 @app.route("/questions")
 @login_required
