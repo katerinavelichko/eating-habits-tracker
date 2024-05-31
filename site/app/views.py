@@ -1,12 +1,6 @@
 import json
 import bcrypt
-from flask import (
-    render_template,
-    request,
-    redirect,
-    url_for,
-    jsonify
-)
+from flask import render_template, request, redirect, url_for, jsonify
 from flask_login import login_required, login_user, logout_user, current_user
 from app import app, login_manager, db
 from app.config import get_config
@@ -39,11 +33,11 @@ all_prompts = {
     "sleep_good": "Напиши в стиле наставления мне, что у меня хорошее качество сна, но чтобы его улучшить, нужно\
                    исправить 3 критерия:",
     "sleep_bad": "Напиши в стиле наставления мне, что у меня плохое качество сна, и чтобы его улучшить, нужно\
-                  исправить 3 критерия:"
+                  исправить 3 критерия:",
 }
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(current_directory, 'rf_model.joblib')
+model_path = os.path.join(current_directory, "rf_model.joblib")
 
 # Load the model
 rf_model = load(model_path)
@@ -75,7 +69,9 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         user = Users.query.filter_by(email=email).first()
-        if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+        if user and bcrypt.checkpw(
+                password.encode("utf-8"), user.password.encode("utf-8")
+        ):
             user = UserLogin().create(user)
             login_user(user, remember=True)
             return redirect("/")
@@ -118,45 +114,51 @@ def profile():
     user = Users.query.get(user_id)
     date_of_registration = user.date_of_registration
     days = (date.today() - date_of_registration).days
-    context = {
-        'user': user,
-        'days': days
-    }
+    context = {"user": user, "days": days}
 
     cur_date = date.today()
     user_products = Diary.get_products_today(user_id, cur_date)
     user_products_eng = translator(user_products)
     api_key = config["apiusda"]["api"]
     for i in range(len(user_products_eng)):
-        search_query = user_products_eng[i]['product_name']
-        g = user_products_eng[i]['grams']
-        url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={search_query}'
+        search_query = user_products_eng[i]["product_name"]
+        g = user_products_eng[i]["grams"]
+        url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={search_query}"
         response = requests.get(url)
 
-        nutrients = {'Energy': 0, 'Protein': 0, 'Total lipid (fat)': 0, 'Carbohydrate, by difference': 0}
+        nutrients = {
+            "Energy": 0,
+            "Protein": 0,
+            "Total lipid (fat)": 0,
+            "Carbohydrate, by difference": 0,
+        }
 
         if response.status_code == 200:
             data = response.json()
             features = {}
-            for name in data['foods'][0]['foodNutrients']:
-                if name['nutrientName'] in nutrients.keys():
-                    nutrients[name['nutrientName']] = name['value']
+            for name in data["foods"][0]["foodNutrients"]:
+                if name["nutrientName"] in nutrients.keys():
+                    nutrients[name["nutrientName"]] = name["value"]
             for key in nutrients.keys():
-                features[key.replace(' ', '').replace(',', '').replace('(', '').replace(')', '')] = format(
-                    nutrients[key] / 100 * g, '.2f')
+                features[
+                    key.replace(" ", "")
+                    .replace(",", "")
+                    .replace("(", "")
+                    .replace(")", "")
+                ] = format(nutrients[key] / 100 * g, ".2f")
             user_products[i].update(features)
 
     energy, protein, fat, carbohydrates = 0, 0, 0, 0
     for product in user_products:
-        energy += float(product['Energy'])
-        protein += float(product['Protein'])
-        fat += float(product['Totallipidfat'])
-        carbohydrates += float(product['Carbohydratebydifference'])
+        energy += float(product["Energy"])
+        protein += float(product["Protein"])
+        fat += float(product["Totallipidfat"])
+        carbohydrates += float(product["Carbohydratebydifference"])
 
-    context['carbohydrates'] = int(carbohydrates)
-    context['protein'] = int(protein)
-    context['fat'] = int(fat)
-    context['energy'] = int(energy)
+    context["carbohydrates"] = int(carbohydrates)
+    context["protein"] = int(protein)
+    context["fat"] = int(fat)
+    context["energy"] = int(energy)
     return render_template("profile.html", **context)
 
 
@@ -174,7 +176,7 @@ def create_user():
         # print(form.validate_on_submit(), form.hidden_tag())
         if form.validate_on_submit():
             # app.logger.info('1',form.hidden_tag())
-            if (not Users.query.filter_by(email=form.email.data).first()):
+            if not Users.query.filter_by(email=form.email.data).first():
                 email = form.email.data
                 name = form.name.data
                 password = form.password.data
@@ -198,12 +200,12 @@ def receive_post_from_forms():
     form = Posts()
     user_id = current_user.get_id()
 
-    title = data['name']
-    text = data['blog']
-    abstract = data['abstract']
-    tags = data['tags']
-    tags_mas = [x['tag'] for x in tags]
-    tags_string = ', '.join(tags_mas)
+    title = data["name"]
+    text = data["blog"]
+    abstract = data["abstract"]
+    tags = data["tags"]
+    tags_mas = [x["tag"] for x in tags]
+    tags_string = ", ".join(tags_mas)
 
     form.add_post(text, title, abstract, tags_string, user_id)
     return data
@@ -227,29 +229,46 @@ def receive_callories_from_forms():
     # [{'name': 'яблоко', 'value': 100}, {'name': 'груша', 'value': 200}]
     user_id = current_user.get_id()
     for products in data:
-        product_name = products['name']
-        grams = products['value']
+        product_name = products["name"]
+        grams = products["value"]
         form.add_product(product_name, grams, user_id)
 
     return data
 
 
 def answers(file, prompt_key_good, prompt_key_bad):
-    number = rf_model.predict(make_df_for_model(current_user, QuestionsSleep)[0]).tolist()[0]
-    keys = make_df_for_model(current_user, QuestionsSleep)[1]
-    if int(number) == 1:
-        prompt = all_prompts[prompt_key_good] + \
-                 keys[0] + "," + keys[1] + "," + keys[2]
+    if QuestionsSleep.query.filter_by(user_id=current_user.get_id()).first() is not None:
+        number = rf_model.predict(
+            make_df_for_model(current_user, QuestionsSleep)[0]
+        ).tolist()[0]
+        keys = make_df_for_model(current_user, QuestionsSleep)[1]
+        if int(number) == 1:
+            prompt = (
+                    all_prompts[prompt_key_good]
+                    + keys[0]
+                    + ","
+                    + keys[1]
+                    + ","
+                    + keys[2]
+            )
+        else:
+            prompt = (
+                    all_prompts[prompt_key_bad]
+                    + keys[0]
+                    + ","
+                    + keys[1]
+                    + ","
+                    + keys[2]
+            )
+        account = YandexGPTLite(
+            config["yandexgpt"]["key1"], config["yandexgpt"]["key2"]
+        )
+        text = account.create_completion(prompt, "0.6")
+        text1 = "1. " + " ".join(text.split("**")[1:])
+        context = {"text": text1}
+        return render_template(file, **context)
     else:
-        prompt = all_prompts[prompt_key_bad] + \
-                 keys[0] + "," + keys[1] + "," + keys[2]
-    account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
-    text = account.create_completion(prompt, '0.6')
-    text1 = '1. ' + ' '.join(text.split('**')[1:])
-    context = {
-        'text': text1
-    }
-    return render_template(file, **context)
+        return 'Сначала заполните форму'
 
 
 @app.route("/activity", methods=["POST", "GET"])
@@ -279,35 +298,57 @@ def tracker():
     context = {}
     api_key = config["apiusda"]["api"]
     for i in range(len(user_products_eng)):
-        search_query = user_products_eng[i]['product_name']
-        g = user_products_eng[i]['grams']
-        url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={search_query}'
+        search_query = user_products_eng[i]["product_name"]
+        g = user_products_eng[i]["grams"]
+        url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={search_query}"
         response = requests.get(url)
 
-        nutrients = {'Energy': 0, 'Protein': 0, 'Total lipid (fat)': 0, 'Carbohydrate, by difference': 0,
-                     'Fiber, total dietary': 0, 'Total Sugars': 0}
-        units = {'Energy': 'ккал', 'Protein': 'г', 'Total lipid (fat)': 'г', 'Carbohydrate, by difference': 'г',
-                 'Fiber, total dietary': 'г', 'Total Sugars': 'г'}
-        nutrients_ru = {'Energy': 'Калории', 'Protein': 'Белки', 'Total lipid (fat)': 'Жиры',
-                        'Carbohydrate, by difference': 'Углеводы',
-                        'Fiber, total dietary': 'Клетчатка', 'Total Sugars': 'Сахар'}
+        nutrients = {
+            "Energy": 0,
+            "Protein": 0,
+            "Total lipid (fat)": 0,
+            "Carbohydrate, by difference": 0,
+            "Fiber, total dietary": 0,
+            "Total Sugars": 0,
+        }
+        units = {
+            "Energy": "ккал",
+            "Protein": "г",
+            "Total lipid (fat)": "г",
+            "Carbohydrate, by difference": "г",
+            "Fiber, total dietary": "г",
+            "Total Sugars": "г",
+        }
+        nutrients_ru = {
+            "Energy": "Калории",
+            "Protein": "Белки",
+            "Total lipid (fat)": "Жиры",
+            "Carbohydrate, by difference": "Углеводы",
+            "Fiber, total dietary": "Клетчатка",
+            "Total Sugars": "Сахар",
+        }
 
         if response.status_code == 200:
             data = response.json()
             features = {}
-            for name in data['foods'][0]['foodNutrients']:
-                if name['nutrientName'] in nutrients.keys():
-                    nutrients[name['nutrientName']] = name['value']
+            for name in data["foods"][0]["foodNutrients"]:
+                if name["nutrientName"] in nutrients.keys():
+                    nutrients[name["nutrientName"]] = name["value"]
             for key in nutrients.keys():
-                features[key.replace(' ', '').replace(',', '').replace('(', '').replace(')', '')] = [nutrients_ru[key],
-                                                                                                     format(nutrients[
-                                                                                                                key] / 100 * g,
-                                                                                                            '.2f'),
-                                                                                                     units[key]]
+                features[
+                    key.replace(" ", "")
+                    .replace(",", "")
+                    .replace("(", "")
+                    .replace(")", "")
+                ] = [
+                    nutrients_ru[key],
+                    format(nutrients[key] / 100 * g, ".2f"),
+                    units[key],
+                ]
             user_products[i].update(features)
-    context['products'] = []
+    context["products"] = []
     for product in user_products:
-        context['products'].append(product)
+        context["products"].append(product)
     return render_template("tracker.html", **context)
 
 
@@ -331,7 +372,9 @@ def blog():
         txt = post.text
         txt = txt[:207]
         txt += '...'
-        post_dict['title'] = post.title
+        title = post.title
+        title = title[:25]
+        post_dict['title'] = title
         post_dict['text'] = txt
         post_dict['description'] = post.description
         post_dict['date_of_post'] = post.date_of_post
@@ -351,37 +394,53 @@ def post_page(post_id):
     post = Posts.query.filter_by(id=post_id).first()
     user = Users.query.filter_by(id=post.user_id).first()
     tags = post.tags
-    tags = tags.split(', ')
+    tags = tags.split(", ")
 
-    comments_bd = Comment.query.filter_by(post_id=post_id).order_by(Comment.date_of_comment.asc()).all()
+    comments_bd = (
+        Comment.query.filter_by(post_id=post_id)
+        .order_by(Comment.date_of_comment.asc())
+        .all()
+    )
     comments = []
     for comment in comments_bd:
         user_comment = Users.query.filter_by(id=comment.user_id).first()
         username = user_comment.name
-        comments.append({'username': username,
-                         'date_of_comment': comment.date_of_comment,
-                         'text': comment.text})
-    context = {'post': post,
-               'name': user.name,
-               'tags': tags,
-               'comments': comments}
+        comments.append(
+            {
+                "username": username,
+                "date_of_comment": comment.date_of_comment,
+                "text": comment.text,
+            }
+        )
+    context = {
+        "post": post,
+        "name": user.name,
+        "tags": tags,
+        "comments": comments,
+    }
 
     return render_template("post_page.html", **context)
 
 
 @app.route("/add_comment/<int:post_id>", methods=["POST", "GET"])
 def add_comment(post_id):
-    text = request.form['text']
+    text = request.form["text"]
 
     Comment.add_comment(text, post_id, current_user.get_id())
-    new_comment = Comment.query.filter_by(text=text, post_id=post_id, user_id=current_user.get_id()).first()
+    new_comment = Comment.query.filter_by(
+        text=text, post_id=post_id, user_id=current_user.get_id()
+    ).first()
     user = Users.query.filter_by(id=new_comment.user_id).first()
     username = user.name
-    return jsonify({
-        'username': username,
-        'date_of_comment': new_comment.date_of_comment.strftime('%Y-%m-%d'),
-        'text': new_comment.text
-    })
+    return jsonify(
+        {
+            "username": username,
+            "date_of_comment": new_comment.date_of_comment.strftime(
+                "%Y-%m-%d"
+            ),
+            "text": new_comment.text,
+        }
+    )
 
 
 if __name__ == "__main__":

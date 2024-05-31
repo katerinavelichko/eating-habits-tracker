@@ -14,25 +14,32 @@ from datetime import date, timedelta, datetime
 import pytest
 from unittest.mock import patch
 
-LOGIN_EMAIL = 'login_email@example.com'
-LOGIN_NAME = 'login_test_name'
-LOGIN_PASSWORD = 'login_test_password'
+LOGIN_EMAIL = "login_email@example.com"
+LOGIN_NAME = "login_test_name"
+LOGIN_PASSWORD = "login_test_password"
 LOGIN_DATE = date.today() - timedelta(days=1)
 
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
+    app.config["TESTING"] = True
     with app.test_client() as client:
         yield client
 
 
 def login(name, email, password, date_of_registration, client):
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-    new_user = Users(name=name, email=email, password=hashed_password.decode('utf-8'), date_of_registration=date_of_registration)
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+    new_user = Users(
+        name=name,
+        email=email,
+        password=hashed_password.decode("utf-8"),
+        date_of_registration=date_of_registration,
+    )
     db.session.add(new_user)
     db.session.commit()
-    response = client.post('/login', data={'email': email, 'password': password})
+    response = client.post(
+        "/login", data={"email": email, "password": password}
+    )
 
 
 def logout(email):
@@ -43,92 +50,119 @@ def logout(email):
 
 
 def test_index(client):
-    response = client.get('/')
+    response = client.get("/")
     assert response.status_code == 200
-    assert b'<!DOCTYPE html>' in response.data
+    assert b"<!DOCTYPE html>" in response.data
 
 
 def test_soon(client):
     login(LOGIN_NAME, LOGIN_EMAIL, LOGIN_PASSWORD, LOGIN_DATE, client)
-    response = client.get('/soon')
-    assert response.data == 'Скоро тут что-то будет'.encode('utf-8')
+    response = client.get("/soon")
+    assert response.data == "Скоро тут что-то будет".encode("utf-8")
     logout(LOGIN_EMAIL)
 
 
 # авторизация несуществующего пользователя
 def test_login_nonexistent_user(client):
-    response = client.post('/login', data={'email': 'nonexistent_user@example.com', 'password': 'nonexistent'})
+    response = client.post(
+        "/login",
+        data={
+            "email": "nonexistent_user@example.com",
+            "password": "nonexistent",
+        },
+    )
     assert response.status_code == 200
-    assert 'Неверный email или пароль'.encode('utf-8') in response.data
-    assert b'<!DOCTYPE html>' in response.data
+    assert "Неверный email или пароль".encode("utf-8") in response.data
+    assert b"<!DOCTYPE html>" in response.data
 
 
 # авторизация существующего пользователя
 def test_login_real_user(client):
-    email = 'valid@example.com'
-    password = 'validpassword'
+    email = "valid@example.com"
+    password = "validpassword"
 
     # добавляем пользователя в бд
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
-    new_user = Users(email=email, password=hashed_password.decode('utf-8'))
+    new_user = Users(email=email, password=hashed_password.decode("utf-8"))
     db.session.add(new_user)
     db.session.commit()
 
-    response = client.post('/login', data={'email': email, 'password': password})
+    response = client.post(
+        "/login", data={"email": email, "password": password}
+    )
 
     # проверяем, что страница перенаправляет пользователя
     assert response.status_code == 302
-    assert response.location == '/'
+    assert response.location == "/"
 
     assert Users.query.filter_by(email=email).first() is not None
-    assert b'<!doctype html>' in response.data
+    assert b"<!doctype html>" in response.data
 
     logout(email)
 
 
 def test_tracker_form(client):
     login(LOGIN_NAME, LOGIN_EMAIL, LOGIN_PASSWORD, LOGIN_DATE, client)
-    response = client.get('/diary')
+    response = client.get("/diary")
     assert response.status_code == 200
     logout(LOGIN_EMAIL)
 
 
 def test_surveys(client):
     login(LOGIN_NAME, LOGIN_EMAIL, LOGIN_PASSWORD, LOGIN_DATE, client)
-    response = client.get('/questions')
+    response = client.get("/questions")
     assert response.status_code == 200
     logout(LOGIN_EMAIL)
 
 
 # регистрация с валидными данными
 def test_create_user_valid_data(client):
-    response = client.get('/signup')
+    response = client.get("/signup")
     assert response.status_code == 200
 
     csrf_token = csrf.generate_csrf()
-    response = client.post('/signup',
-                           data={'name': 'testname', 'email': 'valid_email@example.com', 'password': '12345678',
-                                 'csrf_token': csrf_token})
+    response = client.post(
+        "/signup",
+        data={
+            "name": "testname",
+            "email": "valid_email@example.com",
+            "password": "12345678",
+            "csrf_token": csrf_token,
+        },
+    )
     assert response.status_code == 302
-    assert Users.query.filter_by(email='valid_email@example.com').first() is not None
+    assert (
+        Users.query.filter_by(email="valid_email@example.com").first()
+        is not None
+    )
 
-    logout('valid_email@example.com')
+    logout("valid_email@example.com")
 
 
 # регистрация с невалидными данными
-@pytest.mark.parametrize("email, password", [
-    ('invalid_email', 'valid_password'), ('validemail@example.com', 'invalid')
-])
+@pytest.mark.parametrize(
+    "email, password",
+    [
+        ("invalid_email", "valid_password"),
+        ("validemail@example.com", "invalid"),
+    ],
+)
 def test_create_user_invalid_data(client, email, password):
-    response = client.get('/signup')
+    response = client.get("/signup")
     assert response.status_code == 200
     csrf_token = csrf.generate_csrf()
-    response = client.post('/signup',
-                           data={'name': 'testname', 'email': email, 'password': password,
-                                 'csrf_token': csrf_token})
+    response = client.post(
+        "/signup",
+        data={
+            "name": "testname",
+            "email": email,
+            "password": password,
+            "csrf_token": csrf_token,
+        },
+    )
 
-    assert 'Некорректный email'.encode('utf-8') in response.data
+    assert "Некорректный email".encode("utf-8") in response.data
     assert Users.query.filter_by(email=email).first() is None
 
 
@@ -179,13 +213,15 @@ def test_receive_data(client):
         "fish": "Иногда",
         "meat": "Да",
         "nuts": "Нет",
-        "hungry_during_day": "Днем"
+        "hungry_during_day": "Днем",
     }
 
-    response = client.post('/receive_data', json=data)
+    response = client.post("/receive_data", json=data)
     assert response.status_code == 200
 
-    questions_sleep = QuestionsSleep.query.filter_by(user_id=current_user.get_id()).first()
+    questions_sleep = QuestionsSleep.query.filter_by(
+        user_id=current_user.get_id()
+    ).first()
     assert questions_sleep is not None
     assert questions_sleep.sex == "М"
     assert questions_sleep.tofu == "Да"
@@ -195,28 +231,28 @@ def test_receive_data(client):
 
 
 def test_load_user():
-    with patch.object(UserLogin, 'from_db') as mock_from_db:
+    with patch.object(UserLogin, "from_db") as mock_from_db:
         user_id = 1
         loaded_user = load_user(user_id)
         mock_from_db.assert_called_once_with(user_id)
 
 
-@patch('app.views.logout_user')
+@patch("app.views.logout_user")
 def test_logout_redirects_to_login(mock_logout_user, client):
     mock_logout_user.return_value = None
-    response = client.get('/logout')
+    response = client.get("/logout")
 
     mock_logout_user.assert_called_once()
     assert response.status_code == 302
-    assert response.location == '/login'
+    assert response.location == "/login"
 
 
 def test_callories_from_forms(client):
     login(LOGIN_NAME, LOGIN_EMAIL, LOGIN_PASSWORD, LOGIN_DATE, client)
 
-    data = [{'name': 'яблоко', 'value': 100}]
+    data = [{"name": "яблоко", "value": 100}]
 
-    response = client.post('/receive_callories', json=data)
+    response = client.post("/receive_callories", json=data)
     assert response.status_code == 200
 
     diary = Diary.query.filter_by(user_id=current_user.get_id()).first()
@@ -229,25 +265,25 @@ def test_callories_from_forms(client):
 
 
 def test_unsuccess(client):
-    response = client.get('/signup/unsuccess')
+    response = client.get("/signup/unsuccess")
     assert response.status_code == 200
 
 
 def test_profile(client):
     login(LOGIN_NAME, LOGIN_EMAIL, LOGIN_PASSWORD, LOGIN_DATE, client)
 
-    data = [{'name': 'яблоко', 'value': 100}, {'name': 'груша', 'value': 200}]
+    data = [{"name": "яблоко", "value": 100}, {"name": "груша", "value": 200}]
     diary = Diary()
     user_id = current_user.get_id()
     for products in data:
-        product_name = products['name']
-        grams = products['value']
+        product_name = products["name"]
+        grams = products["value"]
         diary.add_product(product_name, grams, user_id)
 
-    response = client.get('/profile')
+    response = client.get("/profile")
     assert response.status_code == 200
 
-    assert b'login_email@example.com' in response.data
+    assert b"login_email@example.com" in response.data
 
     for i in range(2):
         diary = Diary.query.filter_by(user_id=current_user.get_id()).first()

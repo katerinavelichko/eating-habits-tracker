@@ -2,54 +2,55 @@
 
 {% block title %}Страница главная{% endblock %}
 {% block content %}
- <link rel="stylesheet"  type="text/css" href="../static/css/style.css">
+<link rel="stylesheet" type="text/css" href="../static/css/style.css">
 <div class="carousel">
-  <div class="carousel__nav">
+    <div class="carousel__nav">
    <span id="moveLeft" class="carousel__arrow">
         <svg class="carousel__icon" width="24" height="24" viewBox="0 0 24 24">
     <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path>
 </svg>
     </span>
-    <span id="moveRight" class="carousel__arrow" >
-      <svg class="carousel__icon"  width="24" height="24" viewBox="0 0 24 24">
+        <span id="moveRight" class="carousel__arrow">
+      <svg class="carousel__icon" width="24" height="24" viewBox="0 0 24 24">
   <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path>
 </svg>
     </span>
-  </div>
-  <div class="carousel-item carousel-item--1">
-    <div class="carousel-item__image"></div>
-    <div class="carousel-item__info">
-      <div class="carousel-item__container">
-      <h1 class="carousel-item__title">Сон</h1>
-      <p class="carousel-item__description">Узнайте больше о своем сне</p>
-      <a href="/questions" class="carousel-item__btn">Подробнее</a>
+    </div>
+    <div class="carousel-item carousel-item--1">
+        <div class="carousel-item__image"></div>
+        <div class="carousel-item__info">
+            <div class="carousel-item__container">
+                <h1 class="carousel-item__title">Сон</h1>
+                <p class="carousel-item__description">Узнайте больше о своем сне и как его улучшить</p>
+                <a href="/questions" class="carousel-item__btn">Подробнее</a>
+            </div>
         </div>
     </div>
-  </div>
-  <div class="carousel-item carousel-item--2">
-    <div class="carousel-item__image"></div>
-    <div class="carousel-item__info">
-      <div class="carousel-item__container">
-      <h1 class="carousel-item__title">Активность</h1>
-      <p class="carousel-item__description">Узнайте больше о своей активности</p>
-      <a href="/activity" class="carousel-item__btn">Подробнее</a>
+    <div class="carousel-item carousel-item--2">
+        <div class="carousel-item__image"></div>
+        <div class="carousel-item__info">
+            <div class="carousel-item__container">
+                <h1 class="carousel-item__title">Активность</h1>
+                <p class="carousel-item__description">Получите советы по оптимизации вашей активности</p>
+                <a href="/activity" class="carousel-item__btn">Подробнее</a>
+            </div>
         </div>
     </div>
-  </div>
     <div class="carousel-item carousel-item--3">
-    <div class="carousel-item__image"></div>
-    <div class="carousel-item__info">
-      <div class="carousel-item__container">
-      <h1 class="carousel-item__title">Питание</h1>
-      <p class="carousel-item__description">???</p>
-      <a href="/food" class="carousel-item__btn">Подробнее</a>
+        <div class="carousel-item__image"></div>
+        <div class="carousel-item__info">
+            <div class="carousel-item__container">
+                <h1 class="carousel-item__title">Питание</h1>
+                <p class="carousel-item__description">Получите советы о вашем питании для заботы о здоровье</p>
+                <a href="/food" class="carousel-item__btn">Подробнее</a>
+            </div>
         </div>
     </div>
-  </div>
 
 </div>
 
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script><script  src="../static/js/script.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src="../static/js/script.js"></script>
 
 {% endblock %}

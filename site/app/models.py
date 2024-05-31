@@ -7,24 +7,33 @@ import bcrypt
 
 
 class Users(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(120))
     password = db.Column(db.String(120))
     date_of_registration = db.Column(db.Date)
-    rights = db.Column(db.Integer)  # stupid way: 0 - reader rights, 1 - creator rights
+    rights = db.Column(
+        db.Integer
+    )  # stupid way: 0 - reader rights, 1 - creator rights
 
     # controlling it by arms
 
     @classmethod
     def add_user(cls, name, email, password):
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        user = cls(name=name, email=email, password=hashed_password.decode('utf-8'), date_of_registration=date.today())
+        hashed_password = bcrypt.hashpw(
+            password.encode("utf-8"), bcrypt.gensalt()
+        )
+        user = cls(
+            name=name,
+            email=email,
+            password=hashed_password.decode("utf-8"),
+            date_of_registration=date.today(),
+        )
         db.session.add(user)
         db.session.commit()
-        print(f'Добавлен новый пользователь: {name}')
+        print(f"Добавлен новый пользователь: {name}")
 
     @classmethod
     def delete_user(cls, name, email):
@@ -32,16 +41,16 @@ class Users(db.Model):
         if user:
             db.session.delete(user)
             db.session.commit()
-            print(f'Пользователь {name} был удален')
+            print(f"Пользователь {name} был удален")
         else:
-            print(f'Пользователя {name} нет в списках')
+            print(f"Пользователя {name} нет в списках")
 
 
 class QuestionsSleep(db.Model):
-    __tablename__ = 'questions_sleep'
+    __tablename__ = "questions_sleep"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     tofu = db.Column(db.String(255))
     processed_meat = db.Column(db.String(255))
     play_sport = db.Column(db.String(255))
@@ -69,18 +78,18 @@ class QuestionsSleep(db.Model):
 
     @classmethod
     def add_question(cls, user_id, question_data):
-        question_data['user_id'] = user_id
+        question_data["user_id"] = user_id
         question = cls(**question_data)
         db.session.add(question)
         db.session.commit()
-        print(f'Добавлен новый вопрос')
+        print(f"Добавлен новый вопрос")
 
 
 class Diary(db.Model):
-    __tablename__ = 'diary'
+    __tablename__ = "diary"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     product_name = db.Column(db.String(200))
     grams = db.Column(db.Integer)
     date = db.Column(db.Date)
@@ -88,7 +97,9 @@ class Diary(db.Model):
     @classmethod
     def add_product(cls, product_name, grams, user_id):
         today = date.today()
-        product = cls(user_id=user_id, product_name=product_name, grams=grams, date=today)
+        product = cls(
+            user_id=user_id, product_name=product_name, grams=grams, date=today
+        )
         db.session.add(product)
         db.session.commit()
 
@@ -98,18 +109,18 @@ class Diary(db.Model):
         products_list = []
         for product in products:
             product_dict = {
-                'product_name': product.product_name,
-                'grams': product.grams
+                "product_name": product.product_name,
+                "grams": product.grams,
             }
             products_list.append(product_dict)
         return products_list
 
 
 class Posts(db.Model):
-    __tablename__ = 'posts'
+    __tablename__ = "posts"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     text = db.Column(db.Text)
     title = db.Column(db.String(255))
     description = db.Column(db.String(500))
@@ -120,25 +131,34 @@ class Posts(db.Model):
     @classmethod
     def add_post(cls, text, title, description, tags, user_id):
         today = date.today()
-        photo = search_images_un(tags.split(', ')[0])
-        post = cls(user_id=user_id, text=text, title=title, description=description, tags=tags, date_of_post=today,
-                   photo=photo)
+        photo = search_images_un(tags.split(", ")[0])
+        post = cls(
+            user_id=user_id,
+            text=text,
+            title=title,
+            description=description,
+            tags=tags,
+            date_of_post=today,
+            photo=photo,
+        )
         db.session.add(post)
         db.session.commit()
 
 
 class Comment(db.Model):
-    __tablename__ = 'comment'
+    __tablename__ = "comment"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
     text = db.Column(db.Text)
     date_of_comment = db.Column(db.Date)
 
     @classmethod
     def add_comment(cls, text, post_id, user_id):
         today = date.today()
-        comment = cls(user_id=user_id, text=text, post_id=post_id, date_of_comment=today)
+        comment = cls(
+            user_id=user_id, text=text, post_id=post_id, date_of_comment=today
+        )
         db.session.add(comment)
         db.session.commit()
