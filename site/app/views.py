@@ -70,7 +70,7 @@ def login():
         password = request.form["password"]
         user = Users.query.filter_by(email=email).first()
         if user and bcrypt.checkpw(
-            password.encode("utf-8"), user.password.encode("utf-8")
+                password.encode("utf-8"), user.password.encode("utf-8")
         ):
             user = UserLogin().create(user)
             login_user(user, remember=True)
@@ -237,35 +237,38 @@ def receive_callories_from_forms():
 
 
 def answers(file, prompt_key_good, prompt_key_bad):
-    number = rf_model.predict(
-        make_df_for_model(current_user, QuestionsSleep)[0]
-    ).tolist()[0]
-    keys = make_df_for_model(current_user, QuestionsSleep)[1]
-    if int(number) == 1:
-        prompt = (
-            all_prompts[prompt_key_good]
-            + keys[0]
-            + ","
-            + keys[1]
-            + ","
-            + keys[2]
+    if QuestionsSleep.query.filter_by(user_id=current_user.get_id()).first() is not None:
+        number = rf_model.predict(
+            make_df_for_model(current_user, QuestionsSleep)[0]
+        ).tolist()[0]
+        keys = make_df_for_model(current_user, QuestionsSleep)[1]
+        if int(number) == 1:
+            prompt = (
+                    all_prompts[prompt_key_good]
+                    + keys[0]
+                    + ","
+                    + keys[1]
+                    + ","
+                    + keys[2]
+            )
+        else:
+            prompt = (
+                    all_prompts[prompt_key_bad]
+                    + keys[0]
+                    + ","
+                    + keys[1]
+                    + ","
+                    + keys[2]
+            )
+        account = YandexGPTLite(
+            config["yandexgpt"]["key1"], config["yandexgpt"]["key2"]
         )
+        text = account.create_completion(prompt, "0.6")
+        text1 = "1. " + " ".join(text.split("**")[1:])
+        context = {"text": text1}
+        return render_template(file, **context)
     else:
-        prompt = (
-            all_prompts[prompt_key_bad]
-            + keys[0]
-            + ","
-            + keys[1]
-            + ","
-            + keys[2]
-        )
-    account = YandexGPTLite(
-        config["yandexgpt"]["key1"], config["yandexgpt"]["key2"]
-    )
-    text = account.create_completion(prompt, "0.6")
-    text1 = "1. " + " ".join(text.split("**")[1:])
-    context = {"text": text1}
-    return render_template(file, **context)
+        return 'Сначала заполните форму'
 
 
 @app.route("/activity", methods=["POST", "GET"])
@@ -363,23 +366,25 @@ def unsuccess():
 def blog():
     all_posts = Posts.query.order_by(Posts.date_of_post.desc()).all()
     context = {}
-    context["posts"] = []
+    context['posts'] = []
     for post in all_posts:
         post_dict = {}
         txt = post.text
         txt = txt[:207]
-        txt += "..."
-        post_dict["title"] = post.title
-        post_dict["text"] = txt
-        post_dict["description"] = post.description
-        post_dict["date_of_post"] = post.date_of_post
+        txt += '...'
+        title = post.title
+        title = title[:25]
+        post_dict['title'] = title
+        post_dict['text'] = txt
+        post_dict['description'] = post.description
+        post_dict['date_of_post'] = post.date_of_post
         tags = post.tags
-        post_dict["tags"] = tags.split(", ")
+        post_dict['tags'] = tags.split(', ')
         user = Users.query.filter_by(id=post.user_id).first()
-        post_dict["name"] = user.name
-        post_dict["photo"] = post.photo
-        post_dict["id"] = post.id
-        context["posts"].append(post_dict)
+        post_dict['name'] = user.name
+        post_dict['photo'] = post.photo
+        post_dict['id'] = post.id
+        context['posts'].append(post_dict)
 
     return render_template("blog.html", **context)
 

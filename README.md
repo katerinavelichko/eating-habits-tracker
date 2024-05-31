@@ -51,4 +51,4 @@
        #### `sudo docker-compose up -d --build` 
    - Выполните обновление базы данных:
        #### `sudo docker-compose exec backend flask db upgrade`
-   - Перейдите http://l981127k.beget.tech/
+3. Перейдите http://l981127k.beget.tech/ (но деньги на поддержку сайта закончились :((((( )
