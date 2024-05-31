@@ -235,24 +235,21 @@ def receive_callories_from_forms():
 
 
 def answers(file, prompt_key_good, prompt_key_bad):
-    if QuestionsSleep.query.filter_by(user_id=current_user.get_id()).first() is not None:
-        number = rf_model.predict(make_df_for_model(current_user, QuestionsSleep)[0]).tolist()[0]
-        keys = make_df_for_model(current_user, QuestionsSleep)[1]
-        if int(number) == 1:
-            prompt = all_prompts[prompt_key_good] + \
-                     keys[0] + "," + keys[1] + "," + keys[2]
-        else:
-            prompt = all_prompts[prompt_key_bad] + \
-                     keys[0] + "," + keys[1] + "," + keys[2]
-        account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
-        text = account.create_completion(prompt, '0.6')
-        text1 = '1. ' + ' '.join(text.split('**')[1:])
-        context = {
-            'text': text1
-        }
-        return render_template(file, **context)
+    number = rf_model.predict(make_df_for_model(current_user, QuestionsSleep)[0]).tolist()[0]
+    keys = make_df_for_model(current_user, QuestionsSleep)[1]
+    if int(number) == 1:
+        prompt = all_prompts[prompt_key_good] + \
+                 keys[0] + "," + keys[1] + "," + keys[2]
     else:
-        return 'Сначала заполните форму'
+        prompt = all_prompts[prompt_key_bad] + \
+                 keys[0] + "," + keys[1] + "," + keys[2]
+    account = YandexGPTLite(config['yandexgpt']["key1"], config["yandexgpt"]["key2"])
+    text = account.create_completion(prompt, '0.6')
+    text1 = '1. ' + ' '.join(text.split('**')[1:])
+    context = {
+        'text': text1
+    }
+    return render_template(file, **context)
 
 
 @app.route("/activity", methods=["POST", "GET"])
@@ -334,9 +331,7 @@ def blog():
         txt = post.text
         txt = txt[:207]
         txt += '...'
-        title =  post.title
-        title = title[:26]
-        post_dict['title'] = title
+        post_dict['title'] = post.title
         post_dict['text'] = txt
         post_dict['description'] = post.description
         post_dict['date_of_post'] = post.date_of_post
