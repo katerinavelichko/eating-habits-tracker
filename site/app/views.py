@@ -204,11 +204,9 @@ def receive_post_from_forms():
     tags = data['tags']
     tags_mas = [x['tag'] for x in tags]
     tags_string = ', '.join(tags_mas)
-
+    a = ""
     form.add_post(text, title, abstract, tags_string, user_id)
     return data
-
-
 @app.route("/receive_data", methods=["POST", "GET"])
 @login_required
 def receive_data_from_forms():
@@ -217,8 +215,6 @@ def receive_data_from_forms():
     user_id = current_user.get_id()
     form.add_question(user_id, data)
     return data
-
-
 @app.route("/receive_callories", methods=["POST", "GET"])
 @login_required
 def receive_callories_from_forms():
@@ -232,8 +228,6 @@ def receive_callories_from_forms():
         form.add_product(product_name, grams, user_id)
 
     return data
-
-
 def answers(file, prompt_key_good, prompt_key_bad):
     number = rf_model.predict(make_df_for_model(current_user, QuestionsSleep)[0]).tolist()[0]
     keys = make_df_for_model(current_user, QuestionsSleep)[1]
@@ -250,14 +244,10 @@ def answers(file, prompt_key_good, prompt_key_bad):
         'text': text1
     }
     return render_template(file, **context)
-
-
 @app.route("/activity", methods=["POST", "GET"])
 @login_required
 def activity():
     return answers("activity_answers.html", "activity_good", "activity_bad")
-
-
 @app.route("/food", methods=["POST", "GET"])
 @login_required
 def food():
